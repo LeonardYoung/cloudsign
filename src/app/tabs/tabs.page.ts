@@ -7,6 +7,7 @@ import { Component } from '@angular/core';
 })
 export class TabsPage {
 
+  private auth:number = 0;
   constructor() {}
 
 }
