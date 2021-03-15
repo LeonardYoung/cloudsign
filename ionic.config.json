@@ -1,0 +1,7 @@
+{
+  "name": "cloudsign",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
