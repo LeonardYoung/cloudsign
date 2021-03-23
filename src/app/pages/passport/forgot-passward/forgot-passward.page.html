@@ -8,17 +8,55 @@
 </ion-header>
 
 <ion-content>
-  <ion-list>
-    <ion-item lines="none">
-    </ion-item>
-    <ion-item>
-      <ion-label>手机号</ion-label>
-      <ion-input type="number" placeholder="请输入手机号"></ion-input>
-    </ion-item>
-    <ion-item lines="none">
-    </ion-item>
-
-    <ion-button expand="full" color="primary" (click)="onLogin()">下一步</ion-button>
-  </ion-list>
+  <ion-slides #signupSlides style="width: 100%;">
+    <ion-slide>
+      <form >
+        <ion-list>
+          <ion-item lines="none">
+          </ion-item>
+          <ion-item>
+            <ion-label position="fixed">手机号</ion-label>
+            <ion-input name="phone" type="number" placeholder="请输入手机号"
+            required pattern="^((13[0-9])|(14[5|7])|(15([0-3]|[5-9]))|(18[0,3,5-9]))\d{8}$"
+            [(ngModel)]="phone"></ion-input>
+          </ion-item>
+          <ion-item lines="full">
+            <ion-label position="fixed">验证码</ion-label>
+            <ion-input name="code" type="number" placeholder="请输入验证码" [(ngModel)]="code"></ion-input>
+            <ion-button (click)="getCode()" expand="block" fill="clear" shape="round">
+              获取验证码
+            </ion-button>
+          </ion-item>
+          <ion-item lines="none">
+          </ion-item>
+          <ion-button (click)="onNext()" expand="block" shape="round" size="small">
+            下一步
+          </ion-button>
+        </ion-list>
+      </form>
+      
+    </ion-slide>
+    <ion-slide>
+      <ion-list>
+        <ion-item lines="none">
+        </ion-item>
+        <ion-item lines="full">
+          <ion-label position="fixed">输入密码</ion-label>
+          <ion-input name="password" type="password" placeholder="请输入8-16位密码" [(ngModel)]="password"></ion-input>
+        </ion-item>
+        <ion-item lines="full">
+          <ion-label position="fixed">确认密码</ion-label>
+          <ion-input name="confirmPassword" type="password" placeholder="请输入确认密码" [(ngModel)]="confirmPassword">
+          </ion-input>
+        </ion-item>
+        <ion-item lines="none">
+        </ion-item>
+        <ion-button (click)="onConfirm()" expand="block">
+          确认修改
+        </ion-button>
+      </ion-list>
+      
+    </ion-slide>
+  </ion-slides>
 
 </ion-content>
