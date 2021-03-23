@@ -1,9 +1,24 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>forgot-passward</ion-title>
+  <ion-toolbar color="primary">
+    <ion-title>忘记密码</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/passport/login" text="返回"></ion-back-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+  <ion-list>
+    <ion-item lines="none">
+    </ion-item>
+    <ion-item>
+      <ion-label>手机号</ion-label>
+      <ion-input type="number" placeholder="请输入手机号"></ion-input>
+    </ion-item>
+    <ion-item lines="none">
+    </ion-item>
+
+    <ion-button expand="full" color="primary" (click)="onLogin()">下一步</ion-button>
+  </ion-list>
 
 </ion-content>

@@ -1,9 +1,53 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>signup</ion-title>
+  <ion-toolbar color="primary">
+    <ion-title>注册</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/passport/login" text="返回"></ion-back-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+  <form #signupForm="ngForm">
+    <ion-list>
+      <ion-item lines="none"></ion-item>
 
+      <ion-item lines="full">
+        <ion-label>身份</ion-label>
+        <ion-select name="identity" [(ngModel)]="signup.identity" value='student' interface="action-sheet">
+          <ion-select-option value='teacher'>教师</ion-select-option>
+          <ion-select-option value='student'>学生</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item lines="full">
+        <ion-label position="fixed">手机号</ion-label>
+        <ion-input name="phone" type="number" placeholder="请输入手机号" [(ngModel)]="signup.phone"></ion-input>
+      </ion-item>
+      <ion-item lines="full">
+        <ion-label position="fixed">验证码</ion-label>
+        <ion-input name="code" type="number" placeholder="请输入验证码" [(ngModel)]="signup.code"></ion-input>
+      </ion-item>
+      <ion-item lines="full">
+        <ion-label position="fixed">工号</ion-label>
+        <ion-input name="userNo" type="password" placeholder="请输入教工号/学号" [(ngModel)]="signup.userNo"></ion-input>
+      </ion-item>
+      <ion-item lines="full">
+        <ion-label position="fixed">输入密码</ion-label>
+        <ion-input name="password" type="password" placeholder="请输入8-16位密码" [(ngModel)]="signup.password"></ion-input>
+      </ion-item>
+      <ion-item lines="full">
+        <ion-label position="fixed">确认密码</ion-label>
+        <ion-input name="confirmPassword" type="password" placeholder="请输入确认密码" [(ngModel)]="signup.confirmPassword">
+        </ion-input>
+      </ion-item>
+      <ion-item lines="none">
+      </ion-item>
+
+      <ion-button type="submit" (click)="onSubmit()" expand="block">
+        注册
+      </ion-button>
+    </ion-list>
+
+  </form>
 </ion-content>

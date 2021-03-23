@@ -1,9 +1,40 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>login</ion-title>
+  <ion-toolbar color="primary">
+    <ion-title>登录</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content >
+  <div padding-horizontal>
+    <form #loginForm="ngForm">   
+      <ion-list padding-right no-margin>
+        <ion-item lines="none"></ion-item>
 
+        <ion-item lines="full">
+          <ion-label position="fixed">账号</ion-label>
+          <ion-input name="username" type="text" placeholder="请输入账号" [(ngModel)]="username"></ion-input>
+        </ion-item>
+        <ion-item  lines="full">
+          <ion-label position="fixed">密码</ion-label>
+          <ion-input name="password" type="password" placeholder="请输入密码" [(ngModel)]="password"></ion-input>
+        </ion-item>
+
+        <ion-item lines="none">
+          <ion-button slot="end" fill="clear" size="small" href="/passport/forgot-passward" >忘记密码？</ion-button>
+        </ion-item>
+      </ion-list>
+      <ion-grid>
+
+        <ion-row>
+          <ion-col>
+            <ion-button expand="full" color="primary" (click)="onLogin()">登录</ion-button>
+          </ion-col>
+          <ion-col>
+            <ion-button expand="full" color="primary"  href="/passport/signup">注册</ion-button>
+          </ion-col>
+        </ion-row>
+        
+      </ion-grid>
+    </form>
+  </div>
 </ion-content>
