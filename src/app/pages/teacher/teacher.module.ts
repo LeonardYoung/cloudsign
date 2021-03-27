@@ -1,3 +1,5 @@
+import { IonicModule } from '@ionic/angular';
+import { FormsModule } from '@angular/forms';
 import { SharedModule } from './../../shared/shared.module';
 import { SigninTotalPage } from './signin-total/signin-total.page';
 import { SigninRecordPage } from './signin-record/signin-record.page';
@@ -13,6 +15,13 @@ import { TeacherRoutingModule } from './teacher-routing.module';
 
 
 @NgModule({
+  imports: [
+    CommonModule,
+    TeacherRoutingModule,
+    SharedModule,
+    FormsModule,
+    IonicModule
+  ],
   declarations: [
     CourseListPage,
     CourseAddPage,
@@ -22,11 +31,6 @@ import { TeacherRoutingModule } from './teacher-routing.module';
     SigninRecordPage,
     SigninTotalPage
   ],
-  imports: [
-    CommonModule,
-    TeacherRoutingModule,
-    SharedModule
-
-  ]
+  
 })
 export class TeacherModule { }
