@@ -62,7 +62,7 @@ export class CourseListPage implements OnInit {
    */
   onClickCourse(course: CourseInfo){
     console.log(course);
-    this.router.navigate(['/teacher/info'],{
+    this.router.navigate(['/tabs/teacher/info'],{
       queryParams:{
         id:'test',
         name:course.courseName

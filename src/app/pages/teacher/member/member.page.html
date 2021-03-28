@@ -1,9 +1,44 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>member</ion-title>
+  <ion-toolbar color="primary">
+    <ion-title>班级成员</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/teacher/info" text="返回"></ion-back-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content color="light">
+  <ion-list>
+    <ion-item>
+      <ion-label>姓名</ion-label>
+      <ion-note>{{member.name}}</ion-note>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>学号</ion-label>
+      <ion-note>{{member.No}}</ion-note>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>性别</ion-label>
+      <ion-note>{{member.gender}}</ion-note>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>学校</ion-label>
+      <ion-note>{{member.school}}</ion-note>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>院系</ion-label>
+      <ion-note>{{member.depart}}</ion-note>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>经验值</ion-label>
+      <ion-note>{{member.exp}}</ion-note>
+    </ion-item>
+
+  </ion-list>
 
 </ion-content>

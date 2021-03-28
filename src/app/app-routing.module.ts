@@ -22,10 +22,7 @@ const routes: Routes = [
     path: 'passport',
     loadChildren: () => import('./pages/passport/passport.module').then( m => m.PassportPageModule)
   },
-  {
-    path: 'teacher',
-    loadChildren: () => import('./pages/teacher/teacher.module').then( m => m.TeacherModule)
-  },
+ 
 
 
 ];

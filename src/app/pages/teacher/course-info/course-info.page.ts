@@ -62,7 +62,7 @@ export class CourseInfoPage implements OnInit {
    * @memberof CourseInfoPage
    */
   onClickRecord(){
-    this.router.navigate(['/teacher/signin-record'],{
+    this.router.navigate(['/tabs/teacher/signin-record'],{
       queryParams:{
         id:'test',
         name: this.courseInfo.courseName
