@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { CourseInfo } from './../vo/course-info';
 import { Component, OnInit } from '@angular/core';
 
@@ -33,19 +34,47 @@ export class CourseListPage implements OnInit {
   ]
   deleteFlag = false
 
-  constructor() { }
+  constructor(private router:Router) { }
 
   ngOnInit() {
   }
+  /**
+   * 监听编辑按钮
+   *
+   * @memberof CourseListPage
+   */
   onClickEdit() {
     this.deleteFlag = true;
   }
+  /**
+   * 监听完成按钮
+   *
+   * @memberof CourseListPage
+   */
   onClickFinish(){
     this.deleteFlag = false;
   }
-  onClickCourse(course){
+  /**
+   * 监听“查看”按钮
+   *
+   * @param {*} course 点击的班课
+   * @memberof CourseListPage
+   */
+  onClickCourse(course: CourseInfo){
     console.log(course);
+    this.router.navigate(['/teacher/info'],{
+      queryParams:{
+        id:'test',
+        name:course.courseName
+      }
+    })
   }
+  /**
+   * 监听删除按钮
+   *
+   * @param {*} course 选中的班课
+   * @memberof CourseListPage
+   */
   onDeleteCourse(course){
     console.log(course);
   }

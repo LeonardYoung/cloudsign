@@ -1,9 +1,70 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>signin-record</ion-title>
+  <ion-toolbar color="primary">
+    <ion-title>签到记录</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/teacher/info"  text="返回"></ion-back-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content color="light">
+  <ion-label>缺勤</ion-label>
+  <ion-label class="rightend">1人</ion-label>
+  <ion-list>
+    <ion-item *ngFor="let member of absenceList" >
+      <ion-thumbnail slot="start">
+        <img src="assets/img/c_goodspicture.png"  />
+      </ion-thumbnail>
+      <ion-label>
+        <ion-text>
+          <h2>{{member.name}}</h2>
+        </ion-text>
+        <ion-text >
+          <p>{{member.No}}</p>
+        </ion-text>
+      </ion-label>
+      <ion-note>
+        <ion-button (click)="onClick(member)" expand="block" fill="clear" shape="round">
+          补签
+        </ion-button>
+      </ion-note>
+    </ion-item>
+  </ion-list>
+
+  <ion-label>迟到</ion-label>
+  <ion-label class="rightend">1人</ion-label>
+  <ion-list>
+    <ion-item *ngFor="let member of lateList" >
+      <ion-thumbnail slot="start">
+        <img src="assets/img/c_goodspicture.png"  />
+      </ion-thumbnail>
+      <ion-label>
+        <ion-text>
+          <h2>{{member.name}}</h2>
+        </ion-text>
+        <ion-text >
+          <p>{{member.No}}</p>
+        </ion-text>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+  <ion-label>成功签到</ion-label>
+  <ion-label class="rightend">1人</ion-label>
+  <ion-list>
+    <ion-item *ngFor="let member of normalList" >
+      <ion-thumbnail slot="start">
+        <img src="assets/img/c_goodspicture.png"  />
+      </ion-thumbnail>
+      <ion-label>
+        <ion-text>
+          <h2>{{member.name}}</h2>
+        </ion-text>
+        <ion-text >
+          <p>{{member.No}}</p>
+        </ion-text>
+      </ion-label>
+    </ion-item>
+  </ion-list>
 
 </ion-content>

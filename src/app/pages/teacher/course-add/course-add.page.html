@@ -7,7 +7,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content color="light">
   <form #courseAddForm="ngForm" (ngSubmit)="onSubmit(courseAddForm)">
 
     <ion-list>
@@ -26,7 +26,7 @@
 
       <ion-item>
         <ion-label>课程代码</ion-label>
-        <ion-input type="number" name="courseCode" placeholder="课程代码" required 
+        <ion-input type="number" name="courseCode" placeholder="请输入课程代码" required 
         pattern="[0-9]{6}"
         [(ngModel)]="courseAddVo.courseCode"
          #code="ngModel" ></ion-input>
