@@ -4,5 +4,7 @@ export interface MemberInfo{
     gender: string,
     school: string,
     depart: string,
-    exp: number,
+    totalExp: number,
+    actualExp: number,
+    level: string,
 }

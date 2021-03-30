@@ -25,7 +25,9 @@ export class SigninRecordPage implements OnInit {
       gender: 'boy',
       school: '福州大学',
       depart: '数计学院',
-      exp: 100,
+      totalExp: 400,
+      actualExp: 300,
+      level: '优秀'
     },
     {
       name: '学生2',
@@ -33,7 +35,9 @@ export class SigninRecordPage implements OnInit {
       gender: 'boy',
       school: '福州大学',
       depart: '数计学院',
-      exp: 100,
+      totalExp: 400,
+      actualExp: 300,
+      level: '优秀'
     },
   ]
   lateList: MemberInfo[] = [
@@ -43,7 +47,9 @@ export class SigninRecordPage implements OnInit {
       gender: 'boy',
       school: '福州大学',
       depart: '数计学院',
-      exp: 100,
+      totalExp: 400,
+      actualExp: 300,
+      level: '优秀'
     },
     {
       name: '学生2',
@@ -51,7 +57,9 @@ export class SigninRecordPage implements OnInit {
       gender: 'boy',
       school: '福州大学',
       depart: '数计学院',
-      exp: 100,
+      totalExp: 400,
+      actualExp: 300,
+      level: '优秀'
     },
   ]
   normalList: MemberInfo[] = [
@@ -61,7 +69,9 @@ export class SigninRecordPage implements OnInit {
       gender: 'boy',
       school: '福州大学',
       depart: '数计学院',
-      exp: 100,
+      totalExp: 400,
+      actualExp: 300,
+      level: '优秀'
     },
     {
       name: '学生2',
@@ -69,7 +79,9 @@ export class SigninRecordPage implements OnInit {
       gender: 'boy',
       school: '福州大学',
       depart: '数计学院',
-      exp: 100,
+      totalExp: 400,
+      actualExp: 300,
+      level: '优秀'
     },
   ]
 

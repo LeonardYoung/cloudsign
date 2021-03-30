@@ -35,10 +35,25 @@
     </ion-item>
 
     <ion-item>
-      <ion-label>经验值</ion-label>
-      <ion-note>{{member.exp}}</ion-note>
+      <ion-label>总经验值</ion-label>
+      <ion-note>{{member.totalExp}}</ion-note>
     </ion-item>
 
+    <ion-item>
+      <ion-label>实际经验值</ion-label>
+      <ion-note>{{member.actualExp}}</ion-note>
+    </ion-item>
+
+
+    <ion-item>
+      <ion-label>出勤等级</ion-label>
+      <ion-note>{{member.level}}</ion-note>
+    </ion-item>
+
+
   </ion-list>
+  <ion-button class="mid-btn" href="/tabs/teacher/signin-detail" expand="block" fill="solid" >
+    查看签到明细
+  </ion-button>
 
 </ion-content>

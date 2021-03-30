@@ -25,7 +25,9 @@ export class CourseInfoPage implements OnInit {
       gender: 'boy',
       school: '福州大学',
       depart: '数计学院',
-      exp: 100,
+      totalExp: 400,
+      actualExp: 300,
+      level: '优秀'
     },
     {
       name: '学生2',
@@ -33,7 +35,9 @@ export class CourseInfoPage implements OnInit {
       gender: 'boy',
       school: '福州大学',
       depart: '数计学院',
-      exp: 222,
+      totalExp: 400,
+      actualExp: 300,
+      level: '优秀'
     },
     {
       name: '学生3',
@@ -41,12 +45,14 @@ export class CourseInfoPage implements OnInit {
       gender: 'boy',
       school: '福州大学',
       depart: '数计学院',
-      exp: 333,
+      totalExp: 400,
+      actualExp: 300,
+      level: '优秀'
     },
   ]
 
 
-  constructor(private activeRouter: ActivatedRoute,private router:Router) {
+  constructor(private activeRouter: ActivatedRoute, private router: Router) {
     this.activeRouter.queryParams.subscribe(queryParsm => {
       this.courseInfo.courseName = queryParsm.name
       // this.id = parseInt(quertParsm.id);
@@ -61,10 +67,10 @@ export class CourseInfoPage implements OnInit {
    *
    * @memberof CourseInfoPage
    */
-  onClickRecord(){
-    this.router.navigate(['/tabs/teacher/signin-record'],{
-      queryParams:{
-        id:'test',
+  onClickRecord() {
+    this.router.navigate(['/tabs/teacher/signin-record'], {
+      queryParams: {
+        id: 'test',
         name: this.courseInfo.courseName
       }
     })

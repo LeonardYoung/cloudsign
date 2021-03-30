@@ -15,7 +15,9 @@ export class MemberPage implements OnInit {
     gender: '',
     school: '',
     depart: '',
-    exp: null,
+    totalExp: null,
+    actualExp: null,
+    level: '',
   }
   constructor(private activateRoute: ActivatedRoute) {
     this.activateRoute.queryParams.subscribe(queryParsm => {
@@ -28,12 +30,15 @@ export class MemberPage implements OnInit {
         gender: 'boy',
         school: '福州大学',
         depart: '数计学院',
-        exp: 333,
+        totalExp: 400,
+        actualExp: 300,
+        level: '优秀'
       }
     });
   }
 
   ngOnInit() {
   }
+
 
 }
