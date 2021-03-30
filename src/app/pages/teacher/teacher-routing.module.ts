@@ -36,7 +36,11 @@ const routes: Routes = [
   {
     path: 'signin-detail',
     component:SigninDetailPage
-  }
+  },
+  {
+    path: 'action',
+    loadChildren: () => import('./signin-action/signin-action.module').then( m => m.SigninActionModule)
+  },
   
 ];
 
