@@ -1,3 +1,4 @@
+import { CourseItemComponent } from './component/course-item/course-item.component';
 import { IonicModule } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
 import { LocalStorageService } from './services/local-storage.service';
@@ -7,7 +8,9 @@ import { CommonModule } from '@angular/common';
 
 
 @NgModule({
-  declarations: [],
+  declarations: [
+    CourseItemComponent
+  ],
   imports: [
     CommonModule,
     FormsModule,
@@ -19,7 +22,8 @@ import { CommonModule } from '@angular/common';
   exports: [
     CommonModule,
     FormsModule,  // 添加
-    IonicModule
+    IonicModule,
+    CourseItemComponent
   ]
 })
 export class SharedModule { }

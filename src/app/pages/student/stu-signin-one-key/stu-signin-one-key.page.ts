@@ -11,5 +11,8 @@ export class StuSigninOneKeyPage implements OnInit {
 
   ngOnInit() {
   }
+  onClickSignin(){
+    console.log("一键签到")
+  }
 
 }

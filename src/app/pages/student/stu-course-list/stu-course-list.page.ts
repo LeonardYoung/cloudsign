@@ -61,7 +61,7 @@ export class StuCourseListPage implements OnInit {
    * @memberof CourseListPage
    */
    onClickCourse(course: CourseInfo){
-    console.log(course);
+    console.log('-----',course);
     this.router.navigate(['/tabs/student/detail'],{
       queryParams:{
         id:'test',
@@ -69,5 +69,33 @@ export class StuCourseListPage implements OnInit {
       }
     })
   }
+  /**
+   * 监听“签到”按钮
+   *
+   * @param {*} course 点击的班课
+   * @memberof CourseListPage
+   */
+   onClickSignin(course: CourseInfo){
+    console.log(course);
+    this.router.navigate(['/tabs/student/onekey'],{
+      queryParams:{
+        id:'test',
+        name:course.courseName
+      }
+    })
+  }
+
+  /**
+   * 监听“删除”按钮
+   *
+   * @param {*} course 点击的班课
+   * @memberof CourseListPage
+   */
+   onClickDelete(course: CourseInfo){
+    console.log(course);
+    
+  }
+
+  
 
 }
