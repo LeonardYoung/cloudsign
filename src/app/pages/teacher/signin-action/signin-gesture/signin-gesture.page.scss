@@ -1,30 +1,64 @@
 .div1{
     // background-color: red($color: #000000);
     width: 300px;
-    // height: 300px;
+    height: 300px;
     margin: auto;
 }
 .div2{
     text-align: center;
-    // margin-top: 50%;
+    // margin-top: 40%;
     background: rgba($color: #3880ff, $alpha: 1.0);
 }
-.div3{
-    width: 100%;
-    margin: auto;
+.patt-holder{background:#3382c0;  -ms-touch-action: none;}
+.patt-wrap{position:relative; cursor:pointer;}
+.patt-wrap ul, .patt-wrap li{
+	list-style: none;
+	margin:0;
+	padding: 0;
 }
-.div4{
-    width: auto;
-    margin-left: 18%;
-    margin-right: 18%;
-    margin-top: 40px;
+.patt-circ{
+	position:relative;
+	float: left;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+ }
+.patt-circ.hovered{
+	border:3px solid #009900;
 }
-.mybutton{
-    margin-left: 10%;
-    margin-right: 10%;
+
+.patt-error .patt-circ.hovered{
+	border:3px solid #BA1B26;
 }
+
+.patt-hidden .patt-circ.hovered{border:0;}
+
+.patt-dots{
+	background: #FFF;
+	width: 10px;height: 10px;
+	border-radius:5px;
+	position:absolute;
+	top:50%;
+	left:50%;
+	margin-top:-5px;
+	margin-left:-5px;
+}
+.patt-lines{
+	border-radius:5px;
+	height:10px;
+	background:rgba(255,255,255,.7);
+	position:absolute;
+	transform-origin:5px 5px;
+	-ms-transform-origin:5px 5px; /* IE 9 */
+	-webkit-transform-origin:5px 5px;
+}
+
+.patt-hidden .patt-lines{
+	display:none;
+}
+
 // #patternHolder .patt-wrap {
 //     z-index: 10;
+//     height: 40px;
 // }
 // #patternHolder .patt-circ.hovered {
 //     background-color: #cde2f2;
@@ -34,7 +68,7 @@
 //     display: none;
 // }
 // #patternHolder .patt-circ.dir {
-//     background-image: url("../../../../../assets/img/icon-arrow.png");
+//     // background-image: url("./../../../../assets/img/icon-arrow.png");
 //     background-position: center;
 //     background-repeat: no-repeat;
 // }

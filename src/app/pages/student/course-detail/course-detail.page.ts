@@ -11,5 +11,13 @@ export class CourseDetailPage implements OnInit {
 
   ngOnInit() {
   }
+  /**
+   * 监听“加入班课”按钮
+   *
+   * @memberof CourseDetailPage
+   */
+  onClickJoin(){
+
+  }
 
 }
