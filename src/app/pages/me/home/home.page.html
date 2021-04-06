@@ -1,0 +1,57 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>个人信息</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content color="light">
+
+  <ion-list>
+    <ion-item>
+      <ion-thumbnail slot="start">
+        <img src="assets/img/c_goodspicture.png"  />
+      </ion-thumbnail>
+      <ion-label>
+        <ion-text>
+          <h1>张三</h1>
+        </ion-text>
+        <ion-text >
+          <p>200327100</p>
+        </ion-text>
+      </ion-label>
+    </ion-item>
+
+    
+    <div class="blank"></div>
+
+    <ion-item detail lines="none" href="/tabs/me/edit">
+      <ion-icon slot="start" name="add"></ion-icon>
+      <ion-label>修改个人信息</ion-label>
+    </ion-item>
+    <div class="blank"></div>
+
+    <ion-item detail lines="none" href="/tabs/me/alter-passward">
+      <ion-icon slot="start" name="add"></ion-icon>
+      <ion-label>修改密码</ion-label>
+    </ion-item>
+    <div class="blank"></div>
+
+    <ion-item detail lines="none" href="/tabs/me/about">
+      <ion-icon slot="start" name="add"></ion-icon>
+      <ion-label>关于我们</ion-label>
+    </ion-item>
+    <div class="blank"></div>
+
+    <ion-item detail lines="none">
+      <ion-icon slot="start" name="add"></ion-icon>
+      <ion-label>版本号</ion-label>
+    </ion-item>
+    <div class="blank"></div>
+
+    <ion-item detail lines="none">
+      <ion-icon slot="start" name="add"></ion-icon>
+      <ion-label>安全退出</ion-label>
+    </ion-item>
+
+  </ion-list>
+</ion-content>

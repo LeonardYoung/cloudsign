@@ -28,6 +28,10 @@ const routes: Routes = [
         loadChildren: () => import('../pages/student/student.module').then( m => m.StudentModule)
       },
       {
+        path: 'me',
+        loadChildren: () => import('../pages/me/me.module').then( m => m.MeModule)
+      },
+      {
         path: '',
         redirectTo: '/tabs/teacher',
         pathMatch: 'full'

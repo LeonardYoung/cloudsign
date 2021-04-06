@@ -1,0 +1,33 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>更改密码</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/me" text="返回"></ion-back-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button (click)="onClickFinish()">
+        完成
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item>
+      <ion-label>原密码</ion-label>
+      <ion-input type="password" name="old" [(ngModel)]="passwards.oldPwd" placeholder="请输入原密码"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>新密码</ion-label>
+      <ion-input type="password" name="new" [(ngModel)]="passwards.newPwd" placeholder="请输入新密码"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>确认新密码</ion-label>
+      <ion-input type="password" name="confirm" [(ngModel)]="passwards.confirmPwd" placeholder="请确认新密码"></ion-input>
+    </ion-item>
+  </ion-list>
+
+</ion-content>
