@@ -4,12 +4,14 @@ import { FormsModule } from '@angular/forms';
 import { LocalStorageService } from './services/local-storage.service';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ConfirmDirective } from './directives/confirm.directive';
 
 
 
 @NgModule({
   declarations: [
-    CourseItemComponent
+    CourseItemComponent,
+    ConfirmDirective
   ],
   imports: [
     CommonModule,
@@ -23,7 +25,8 @@ import { CommonModule } from '@angular/common';
     CommonModule,
     FormsModule,  // 添加
     IonicModule,
-    CourseItemComponent
+    CourseItemComponent,
+    ConfirmDirective
   ]
 })
 export class SharedModule { }

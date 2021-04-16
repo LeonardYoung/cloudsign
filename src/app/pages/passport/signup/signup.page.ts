@@ -27,6 +27,8 @@ export class SignupPage implements OnInit {
   @ViewChild('signupSlides', { static: true }) signupSlides: IonSlides;
 
   ngOnInit() {
+    this.signupSlides.lockSwipeToNext(true);
+    this.signupSlides.lockSwipeToPrev(true);
   }
   onNext() {
     this.signupSlides.slideNext()
