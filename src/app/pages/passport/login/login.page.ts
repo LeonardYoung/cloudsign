@@ -2,6 +2,7 @@ import { PassportServiceService } from './../services/passport-service.service';
 import { LoginVo } from './loginvo';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { IonSlides, ToastController } from '@ionic/angular';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -15,11 +16,21 @@ export class LoginPage implements OnInit {
     username: '',
     phone: '',
     password: '',
-    code:'',
-    type:'',
+    code: '',
+    type: '',
   }
   loginType: string = 'pwd'
-  constructor(private toastCtl: ToastController,private passportService: PassportServiceService) { }
+  codeCmpt: any = {
+    // valid: true,
+    text: '获取验证码',
+    btnDisable: false,
+    timer: null,
+    ms: null,
+    count: 0,
+    countMax: 10,
+  };
+
+  constructor(private toastCtl: ToastController, private passportService: PassportServiceService) { }
 
   ngOnInit() {
     this.loginSlides.lockSwipeToNext(true)
@@ -27,7 +38,7 @@ export class LoginPage implements OnInit {
 
   }
 
-  onClickSmsLogin(){
+  onClickSmsLogin() {
     this.loginType = 'code'
 
     this.loginSlides.lockSwipeToNext(false)
@@ -38,7 +49,7 @@ export class LoginPage implements OnInit {
   /**
    * 监听“密码登录”按钮
    */
-  onClickPwdLogin(){
+  onClickPwdLogin() {
     this.loginType = 'pwd'
 
     this.loginSlides.lockSwipeToPrev(false)
@@ -48,53 +59,89 @@ export class LoginPage implements OnInit {
   /**
    * 监听“获取验证码”按钮
    */
-  async getCode(){
+  async getCode() {
+    // 1.校验
     const toast = await this.toastCtl.create({
       duration: 1500,
-      position:'middle'
+      position: 'top'
     });
-    
-    if(this.loginTable.phone == null || this.loginTable.phone == ''){
+
+    if (this.loginTable.phone == null || this.loginTable.phone == '') {
       toast.message = '请输入手机号码'
       toast.present()
       return
     }
-    
+
     const phoneRegExp = new RegExp(/^((13[0-9])|(14[5|7])|(15([0-3]|[5-9]))|(18[0,3,5-9]))\d{8}$/);
-    let valid = phoneRegExp.test(this.loginTable.phone) 
-    if(valid == false){
+    let valid = phoneRegExp.test(this.loginTable.phone)
+    if (valid == false) {
       toast.message = '请输入正确的手机号码'
       toast.present()
       return
     }
-    this.passportService.sendCodeRequest(this.loginTable.phone)
+    // 2.发送请求
+    this.passportService.sendCodeRequest(this.loginTable.phone).then(resp => {
+      toast.message = '验证码发送成功'
+      toast.present()
+      // 3. 使按钮不可用
+      this.codeCmpt.btnDisable = true;
+      this.codeCmpt.text = this.codeCmpt.countMax + ' s后重新获取';
+      // 开启定时器
+      this.codeCmpt.count = this.codeCmpt.countMax;
+      let stream = new Observable(observe => {
+        this.codeCmpt.timer = setInterval(() => {
+          this.codeCmpt.count--;
+          observe.next();
+        }, 1000);
+      });
+      this.codeCmpt.ms = stream.subscribe(() => {
+        if (this.codeCmpt.count === 0) {
+          this.codeCmpt.btnDisable = false;
+          window.clearInterval(this.codeCmpt.timer);
+          this.codeCmpt.text = '获取验证码';
+        }
+        else {
+          this.codeCmpt.text = this.codeCmpt.count + ' s后重新获取';
+        }
+      });
+      return
+    }).catch(err => {
+      toast.message = `发送失败【${err}】`
+      toast.present()
+      // // 可以重新发送验证码
+      // this.codeCmpt.ms.isUnsubscribed()
+      // this.codeCmpt.btnDisable = false;
+      // window.clearInterval(this.codeCmpt.timer);
+      // this.codeCmpt.text = '获取验证码';
+      return
+    })
   }
 
   /**
    * 登录按钮
    */
-  async onLogin(){
+  async onLogin() {
     const toast = await this.toastCtl.create({
       message: '',
       duration: 1500,
-      position:'middle'
+      position: 'top'
     });
 
-    this.passportService.loginRequest(this.loginTable,this.loginType)
-      .then((resp:any) => {
-        if(resp.code == 0){
+    this.passportService.loginRequest(this.loginTable, this.loginType)
+      .then((resp: any) => {
+        if (resp.code == 0) {
           toast.message = '登录成功';
         }
-        else{
+        else {
           toast.message = `登录失败【${resp.msg}】`
         }
 
       })
       .catch(err => {
-        console.log('请求失败，请检查网络',err)
-        toast.message = '登录失败'
+        console.log('请求失败，请检查网络', err)
+        toast.message = '请求失败，请检查网络'
       })
-      .finally(()=>{
+      .finally(() => {
         toast.present()
       })
   }

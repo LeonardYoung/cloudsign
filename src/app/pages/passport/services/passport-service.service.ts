@@ -4,6 +4,8 @@ import { signupVO } from './../signup/signupvo';
 import { LocalStorageService } from './../../../shared/services/local-storage.service';
 import { Injectable } from '@angular/core';
 import axios from 'axios'
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 
 
@@ -13,8 +15,11 @@ import axios from 'axios'
 export class PassportServiceService {
 
   private smsCode: string = null;
+  httpOptions = { //http请求头
+    headers: new HttpHeaders({ 'Content-Type': 'application/json' })//请求头进行转格式，防止出现415错误
+  };
 
-  constructor(private localStorage: LocalStorageService) {
+  constructor(private localStorage: LocalStorageService,private http: HttpClient) {
     // this.users = this.localStorage.get(USER_KEY, []);
   }
 
@@ -23,22 +28,26 @@ export class PassportServiceService {
    * @param phone 
    */
   sendCodeRequest(phone: string) {
-    console.log('sendCodeReq ', phone);
     const that = this;
-    axios.post(serveUrl + '/user/sms', {
+    const api = serveUrl + '/user/sms'
+    const params:any = {
       phone: phone
-    })
-      .then(function (response) {
+    }
+    return new Promise(function(resolve,reject){
+      that.http.post(api,params,that.httpOptions).subscribe((response:any)=>{
         console.log(response);
-        if (response.data.code == 0) {
-          that.smsCode = response.data.data.code
+        if (response.code == 0) {
+          that.smsCode = response.data.code
+          resolve(that.smsCode)
         }
+        else{
+          reject(response.msg)
+        }
+      },(error:HttpErrorResponse)=>{
+        // let errmsg= `error:${error.error} \r\n msg:${error.message} \r\n status:${error.statusText}`
+        reject('网络请求失败')
       })
-      .catch(function (error) {
-        console.log(error);
-      })
-
-
+    })
   }
 
 
@@ -114,4 +123,5 @@ export class PassportServiceService {
     })
 
   }
+
 }

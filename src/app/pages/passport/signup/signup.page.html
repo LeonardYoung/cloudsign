@@ -7,7 +7,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content color="light">
+<ion-content>
 
   <ion-slides #signupSlides>
     <ion-slide>
@@ -30,11 +30,15 @@
 
           <ion-item lines="full">
             <ion-label position="fixed">验证码</ion-label>
-            <ion-input name="code" type="number" placeholder="请输入验证码" required pattern="[0-9]{4}" #checkcode="ngModel"
+            <ion-input name="code" type="number" placeholder="请输入验证码" required pattern="[0-9]{4,}" #checkcode="ngModel"
               [(ngModel)]="signup.msgcode"></ion-input>
-            <ion-button (click)="getCode()" expand="block" fill="clear" shape="round">
+            <!-- <ion-button (click)="getCode()" expand="block" fill="clear" shape="round">
               获取验证码
-            </ion-button>
+            </ion-button> -->
+            <ion-button (click)="getCode()" expand="block" fill="clear" shape="round"
+              [disabled]="codeCmpt.btnDisable">
+              {{codeCmpt.text}}
+              </ion-button>
           </ion-item>
           <ion-text class="ion-text-left" color="danger" *ngIf="checkcode.invalid && checkcode.touched">
             <p [hidden]="!checkcode.errors?.required" class="ion-padding-start">请输入验证码</p>
@@ -44,7 +48,7 @@
 
           <ion-item lines="none">
           </ion-item>
-          <ion-button [disabled]="phoneCodeForm.invalid" (click)="onNext()" expand="block">
+          <ion-button class="full-btn" [disabled]="phoneCodeForm.invalid" (click)="onNext()" expand="block" shape="round">
             下一步
           </ion-button>
         </ion-list>
@@ -58,9 +62,9 @@
           </ion-item>
           <ion-item lines="full">
             <ion-label>身份</ion-label>
-            <ion-select name="identity" [(ngModel)]="signup.type" value='1' interface="action-sheet">
-              <ion-select-option value='0'>教师</ion-select-option>
-              <ion-select-option value='1'>学生</ion-select-option>
+            <ion-select name="identity" [(ngModel)]="signup.type"  interface="action-sheet">
+              <ion-select-option value='3'>教师</ion-select-option>
+              <ion-select-option value='4'>学生</ion-select-option>
             </ion-select>
           </ion-item>
 
@@ -114,7 +118,7 @@
           <ion-item lines="none">
           </ion-item>
 
-          <ion-button  [disabled]="courseForm.invalid" type="submit" (click)="onSubmit()" expand="block">
+          <ion-button class="full-btn" [disabled]="courseForm.invalid" type="submit" (click)="onSubmit()" expand="block" shape="round">
             注册
           </ion-button>
         </ion-list>
