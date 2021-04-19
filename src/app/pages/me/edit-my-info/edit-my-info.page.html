@@ -6,7 +6,7 @@
     </ion-buttons>
     <ion-buttons slot="end">
       <ion-button (click)="onClickFinish()">
-        完成
+        保存
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
@@ -38,6 +38,17 @@
       <ion-item>
         <ion-label position="fixed">身份</ion-label>
         <ion-input type="text" name="identity" placeholder="请输入学号" [(ngModel)]="pInfo.identity"></ion-input>
+      </ion-item>
+
+      <ion-item detail href='/tabs/me/schools'>
+        <ion-label>
+          <ion-text >
+            <h2>所在的学校及院系</h2>
+          </ion-text>
+          <ion-text>
+            <h2> </h2>
+          </ion-text>
+        </ion-label>
       </ion-item>
 
       <ion-item>

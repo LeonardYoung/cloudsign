@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { PassportServiceService } from './../services/passport-service.service';
 import { LoginVo } from './loginvo';
 import { Component, OnInit, ViewChild } from '@angular/core';
@@ -30,7 +31,7 @@ export class LoginPage implements OnInit {
     countMax: 10,
   };
 
-  constructor(private toastCtl: ToastController, private passportService: PassportServiceService) { }
+  constructor(private toastCtl: ToastController, private passportService: PassportServiceService,private router: Router) { }
 
   ngOnInit() {
     this.loginSlides.lockSwipeToNext(true)
@@ -128,18 +129,12 @@ export class LoginPage implements OnInit {
     });
 
     this.passportService.loginRequest(this.loginTable, this.loginType)
-      .then((resp: any) => {
-        if (resp.code == 0) {
-          toast.message = '登录成功';
-        }
-        else {
-          toast.message = `登录失败【${resp.msg}】`
-        }
-
+      .then(() => {
+        toast.message = '登录成功';
+        this.router.navigateByUrl('/tabs/teacher')
       })
       .catch(err => {
-        console.log('请求失败，请检查网络', err)
-        toast.message = '请求失败，请检查网络'
+        toast.message = `登录失败【${err.errmsg}】`
       })
       .finally(() => {
         toast.present()

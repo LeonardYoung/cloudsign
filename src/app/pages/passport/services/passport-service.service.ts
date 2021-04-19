@@ -1,7 +1,10 @@
+import { TeacherInfoVo } from './../../me/vo/teacherInfoVo';
+import { StuInfoVo } from './../../me/vo/stuInfoVo';
+import { ForgotPwdVo } from './../forgot-passward/forgotPwdVo';
 import { LoginVo } from './../login/loginvo';
 import { serveUrl } from './../../../shared/services/constant';
 import { signupVO } from './../signup/signupvo';
-import { LocalStorageService } from './../../../shared/services/local-storage.service';
+import { LocalStorageService, UID_KEY, USER_TYPE_KEY, USER_INFO_KEY } from './../../../shared/services/local-storage.service';
 import { Injectable } from '@angular/core';
 import axios from 'axios'
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
@@ -35,7 +38,7 @@ export class PassportServiceService {
     }
     return new Promise(function(resolve,reject){
       that.http.post(api,params,that.httpOptions).subscribe((response:any)=>{
-        console.log(response);
+        // console.log(response);
         if (response.code == 0) {
           that.smsCode = response.data.code
           resolve(that.smsCode)
@@ -115,11 +118,81 @@ export class PassportServiceService {
       axios.post(api, params)
         .then(function (response) {
           console.log(response);
-          resolve(response.data)
+          
+          if(response.data.code == 0){
+            if(response.data.data.type == 3 || response.data.data.type == 4){
+              resolve({
+                success: true
+              })
+              that.getMeInfo(response.data)
+            }
+            else{
+              reject({
+                errmsg:'请登录学生或老师账号'
+              })
+            }
+          }
+          else{
+            reject({
+              errmsg:response.data.msg
+            })
+          }
+          
         })
         .catch(function (error) {
-          reject(error)
+          reject({
+            errmsg:'网络请求错误'
+          })
         })
+    })
+
+  }
+  /**
+   * 根据登录返回，获取个人信息
+   */
+  getMeInfo(resp: any){
+    // 存入本地
+    const uid = resp.data.uid
+    this.localStorage.set(UID_KEY,uid)
+    
+    const type = resp.data.type
+    this.localStorage.set(USER_TYPE_KEY,type)
+
+    if(type == 3){
+      const api = serveUrl + '/teacher/' + uid 
+      this.http.get(api,this.httpOptions).subscribe((response:any)=>{
+        const teainfo:TeacherInfoVo = response.data
+        this.localStorage.set(USER_INFO_KEY,teainfo)
+      })
+    }
+    else if(type == 4){
+      const api = serveUrl + '/student/' + uid 
+      this.http.get(api,this.httpOptions).subscribe((response:any)=>{
+        const stuinfo:StuInfoVo = response.data
+        this.localStorage.set(USER_INFO_KEY,stuinfo)
+      })
+    }
+  }
+  sendPwdForgotRequest(input:ForgotPwdVo){
+    const that = this;
+    const api = serveUrl + '/user/pwd-forget'
+    return new Promise(function(resolve,reject){
+      that.http.post(api,input,that.httpOptions).subscribe((response:any)=>{
+        if(response.code == 0){
+          resolve({
+            success: true
+          })
+        }
+        else{
+          reject({
+            errmsg:response.msg
+          })
+        }
+      },(err:any)=>{
+        reject({
+          errmsg:'网络请求失败'
+        })
+      })
     })
 
   }

@@ -1,7 +1,9 @@
+import { ForgotPwdVo } from './forgotPwdVo';
 import { PassportServiceService } from './../services/passport-service.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { IonSlides, ToastController } from '@ionic/angular';
 import { Observable } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-forgot-passward',
@@ -25,7 +27,7 @@ export class ForgotPasswardPage implements OnInit {
     count: 0,
     countMax: 10,
   };
-  constructor(private toastCtl: ToastController,private passportService: PassportServiceService) { }
+  constructor(private toastCtl: ToastController,private passportService: PassportServiceService,private router: Router) { }
   @ViewChild('signupSlides', { static: true }) signupSlides: IonSlides;
 
   ngOnInit() {
@@ -54,8 +56,26 @@ export class ForgotPasswardPage implements OnInit {
     this.signupSlides.slideNext()
     this.signupSlides.lockSwipeToNext(true)
   }
-  onConfirm(){
+  async onConfirm(){
+    const toast = await this.toastCtl.create({
+      duration: 1500,
+      position: 'top'
+    });
     
+    const submitTable: ForgotPwdVo = {
+      phone: this.phone,
+      code: this.code,
+      newPass: this.password,
+      newPassAgain: this.confirmPassword
+    }
+    this.passportService.sendPwdForgotRequest(submitTable).then(()=>{
+      toast.message='修改成功,返回登录页...'
+      this.router.navigateByUrl('/passport/login')
+    }).catch(err=>{
+      toast.message = `修改失败【${err.errmsg}】`
+    }).finally(()=>{
+      toast.present()
+    })
   }
   async getCode() {
     // 1.校验

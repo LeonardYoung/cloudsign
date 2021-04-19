@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
 
+export const UID_KEY='UID'
+export const USER_TYPE_KEY='Usertype'
+export const USER_INFO_KEY='Userinfo'
+
 
 @Injectable({
   providedIn: 'root'
 })
-
-
 export class LocalStorageService {
   private localStorage = window.localStorage;
   constructor() { }

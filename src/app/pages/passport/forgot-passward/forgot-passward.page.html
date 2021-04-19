@@ -25,7 +25,7 @@
           </ion-text>
 
 
-          <ion-item lines="full">
+          <ion-item >
             <ion-label position="fixed">验证码</ion-label>
             <ion-input name="code" type="number" placeholder="请输入验证码" #codeCheck="ngModel"
              required pattern="[0-9]{4,}" [(ngModel)]="code">
@@ -58,7 +58,7 @@
         <ion-list>
           <ion-item lines="none">
           </ion-item>
-          <ion-item lines="full">
+          <ion-item >
             <ion-label position="fixed">输入密码</ion-label>
             <ion-input name="password" type="password" placeholder="请输入6-16位密码" #pwd="ngModel"
             required pattern="^(?=.*[a-z])(?=.*\d)[^]{6,16}$" [(ngModel)]="password"></ion-input>
@@ -69,7 +69,7 @@
           </ion-text>
 
 
-          <ion-item lines="full">
+          <ion-item >
             <ion-label position="fixed">确认密码</ion-label>
             <ion-input name="confirmPassword" type="password" placeholder="请输入确认密码" #cpwd="ngModel"
             required [ysjConfirm]="password" [(ngModel)]="confirmPassword">
@@ -83,7 +83,7 @@
 
           <ion-item lines="none">
           </ion-item>
-          <ion-button [disabled]="pwdForm.invalid" (click)="onConfirm()" expand="block">
+          <ion-button class="full-btn" [disabled]="pwdForm.invalid" (click)="onConfirm()" expand="block"   shape="round">
             确认修改
           </ion-button>
         </ion-list>
