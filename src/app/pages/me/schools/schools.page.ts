@@ -155,7 +155,13 @@ export class SchoolsPage implements OnInit {
     this.curChoice[2].code = ma.ma_code
     
     console.log(this.curChoice)
-    this.router.navigateByUrl('/tabs/me/edit')
+    this.meService.saveSchoolsChoice(this.curChoice)
+    // this.router.navigateByUrl('/tabs/me/edit')
+    this.router.navigate(['/tabs/me/edit'],{
+      queryParams:{
+        schoolChange:true
+      }
+    })
   }
 
 

@@ -66,7 +66,7 @@ export class SignupPage implements OnInit {
   /**
    * 获取验证码
    */
-   async getCode() {
+  async getCode() {
     // 1.校验
     const toast = await this.toastctl.create({
       duration: 1500,
@@ -119,6 +119,72 @@ export class SignupPage implements OnInit {
     })
   }
   /**
+   * 监听“快速注册”按钮
+   */
+  async onFastSignup() {
+    let fastvo: signupVO = {}
+    fastvo.phone = this.signup.phone
+    fastvo.username = this.signup.phone
+    fastvo.msgcode = this.signup.msgcode
+    fastvo.type = '4'
+    fastvo.password = 'abc'
+    // this.signupReq(fastvo)
+
+    const toast = await this.toastctl.create({
+      message: '',
+      duration: 3000,
+      position: 'top'
+    });
+    //发送注册请求
+    this.passportServicec.signupRequest(fastvo)
+      .then((resp: any) => {
+        if (resp.code == 0) {
+          //注册成功，显示下一页
+          this.signupSlides.lockSwipeToNext(false);
+          this.signupSlides.slideNext()
+          this.signupSlides.slideNext()
+          this.signupSlides.lockSwipeToNext(true);
+        }
+        else {
+          toast.message = `注册失败【${resp.msg}】`
+          toast.present()
+        }
+
+      })
+      .catch(err => {
+        console.log('请求失败，请检查网络', err)
+        toast.message = '请求失败，请检查网络'
+        toast.present()
+      })
+  }
+  // async signupReq(data: signupVO) {
+  //   const toast = await this.toastctl.create({
+  //     message: '',
+  //     duration: 3000,
+  //     position: 'top'
+  //   });
+  //   //发送注册请求
+  //   this.passportServicec.signupRequest(data)
+  //     .then((resp: any) => {
+  //       if (resp.code == 0) {
+  //         //注册成功，显示下一页
+  //         this.signupSlides.lockSwipeToNext(false);
+  //         this.signupSlides.slideNext()
+  //         this.signupSlides.lockSwipeToNext(true);
+  //       }
+  //       else {
+  //         toast.message = `注册失败【${resp.msg}】`
+  //         toast.present()
+  //       }
+
+  //     })
+  //     .catch(err => {
+  //       console.log('请求失败，请检查网络', err)
+  //       toast.message = '请求失败，请检查网络'
+  //       toast.present()
+  //     })
+  // }
+  /**
    * 监听“注册”请求
    * @returns 
    */
@@ -128,7 +194,6 @@ export class SignupPage implements OnInit {
       duration: 3000,
       position: 'top'
     });
-
     //发送注册请求
     this.passportServicec.signupRequest(this.signup)
       .then((resp: any) => {

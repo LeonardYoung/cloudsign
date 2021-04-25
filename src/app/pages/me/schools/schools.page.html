@@ -2,7 +2,11 @@
   <ion-toolbar color="primary">
     <ion-title>{{titles[curSlideIndex]}}</ion-title>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref='/tabs/me/schools' (click)="onClickBack()" text='返回'></ion-back-button>
+      <ion-button (click)="onClickBack()" expand="block" fill="clear" shape="round">
+        <ion-icon name="chevron-back-outline"></ion-icon>
+        返回
+      </ion-button>
+      <!-- <ion-back-button defaultHref='/tabs/me/schools' (click)="onClickBack()" text='返回'></ion-back-button> -->
     </ion-buttons>
   </ion-toolbar>
 </ion-header>

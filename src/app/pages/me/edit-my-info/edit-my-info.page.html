@@ -2,7 +2,7 @@
   <ion-toolbar color="primary">
     <ion-title>修改个人信息</ion-title>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/tabs/me" text="返回"></ion-back-button>
+      <ion-back-button defaultHref="/tabs/me" (click)="onClickBack()" text="返回"></ion-back-button>
     </ion-buttons>
     <ion-buttons slot="end">
       <ion-button (click)="onClickFinish()">
@@ -17,16 +17,20 @@
     <form>
       <ion-item>
         <ion-label position="fixed">姓名</ion-label>
-        <ion-input type="text" name="userName" placeholder="请输入姓名" [(ngModel)]="pInfo.userName"></ion-input>
+        <ion-input type="text" name="userName" placeholder="请输入姓名" [(ngModel)]="pInfo.name"></ion-input>
       </ion-item>
 
       <ion-item>
         <ion-label position="fixed">学号</ion-label>
-        <ion-input type="text" name="userNo" placeholder="请输入学号" [(ngModel)]="pInfo.userNo"></ion-input>
+        <ion-input type="text" name="userNo" placeholder="请输入学号" [(ngModel)]="pInfo.identity"></ion-input>
       </ion-item>
 
       <ion-item>
         <ion-label position="fixed">性别</ion-label>
+        <ion-select name="gender" [(ngModel)]="pInfo.gender"  interface="action-sheet">
+          <ion-select-option value='1'>男</ion-select-option>
+          <ion-select-option value='2'>女</ion-select-option>
+        </ion-select>
         <!-- <ion-input type="text" placeholder="请输入学号" [(ngModel)]="pInfo.userNo"></ion-input> -->
       </ion-item>
 
@@ -35,23 +39,26 @@
         <ion-input type="text" name="phone"  placeholder="请输入手机号" [(ngModel)]="pInfo.phone"></ion-input>
       </ion-item>
 
-      <ion-item>
+      <!-- <ion-item>
         <ion-label position="fixed">身份</ion-label>
+        <ion-label>{{pInfo.</ion-label>
         <ion-input type="text" name="identity" placeholder="请输入学号" [(ngModel)]="pInfo.identity"></ion-input>
-      </ion-item>
+      </ion-item> -->
 
-      <ion-item detail href='/tabs/me/schools'>
+      <!-- <ion-item detail href='/tabs/me/schools'> -->
+        <ion-item detail (click)="onClickSchools()">
         <ion-label>
           <ion-text >
             <h2>所在的学校及院系</h2>
           </ion-text>
           <ion-text>
-            <h2> </h2>
+            <h2 *ngIf="pInfo.schoolName != null"> {{pInfo.schoolName + ' ' + pInfo.collegeName + ' ' + pInfo.majorName + ' ' }} </h2>
+            <h2 *ngIf="pInfo.schoolName == null">点击选择学校</h2>
           </ion-text>
         </ion-label>
       </ion-item>
 
-      <ion-item>
+      <!-- <ion-item>
         <ion-label position="fixed">学校</ion-label>
         <ion-input type="text" name="school" placeholder="请输入学校" [(ngModel)]="pInfo.school"></ion-input>
       </ion-item>
@@ -64,7 +71,7 @@
       <ion-item>
         <ion-label position="fixed">班级</ion-label>
         <ion-input type="text" name="classNo" placeholder="请输入班级" [(ngModel)]="pInfo.classNo"></ion-input>
-      </ion-item>
+      </ion-item> -->
 
     </form>
 

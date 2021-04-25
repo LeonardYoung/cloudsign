@@ -1,0 +1,12 @@
+{
+    "/api": {
+        "target": "http://api.myard.cn:6677",
+        "secure": false,
+        "logLevel": "debug",
+        "changeOrigin": true,
+        "pathRewrite": {
+            "^/api": ""
+        }
+    }
+   
+ }

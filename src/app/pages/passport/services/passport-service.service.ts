@@ -1,3 +1,5 @@
+import { MeService } from './../../me/services/me.service';
+import { CommonService } from './../../../shared/services/common.service';
 import { TeacherInfoVo } from './../../me/vo/teacherInfoVo';
 import { StuInfoVo } from './../../me/vo/stuInfoVo';
 import { ForgotPwdVo } from './../forgot-passward/forgotPwdVo';
@@ -22,8 +24,10 @@ export class PassportServiceService {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })//请求头进行转格式，防止出现415错误
   };
 
-  constructor(private localStorage: LocalStorageService,private http: HttpClient) {
+  constructor(private localStorage: LocalStorageService,private http: HttpClient,
+    private comService:CommonService,private meService:MeService) {
     // this.users = this.localStorage.get(USER_KEY, []);
+    
   }
 
   /**
@@ -32,15 +36,14 @@ export class PassportServiceService {
    */
   sendCodeRequest(phone: string) {
     const that = this;
-    const api = serveUrl + '/user/sms'
+    const api = this.comService.transferUrl('/user/sms')
     const params:any = {
       phone: phone
     }
     return new Promise(function(resolve,reject){
       that.http.post(api,params,that.httpOptions).subscribe((response:any)=>{
-        // console.log(response);
         if (response.code == 0) {
-          that.smsCode = response.data.code
+          that.smsCode = response.data
           resolve(that.smsCode)
         }
         else{
@@ -57,7 +60,7 @@ export class PassportServiceService {
   checkSmsCode(input: string) {
     if (this.smsCode == null) {
       return {
-        error: "请发送验证码"
+        error: "请先发送验证码"
       }
     }
     if (this.smsCode == input) {
@@ -79,14 +82,13 @@ export class PassportServiceService {
    * @param data 用户数据
    */
   signupRequest(data: signupVO) {
-    const api = serveUrl + '/user/regist'
+    const api = this.comService.transferUrl('/user/regist')
     const that = this;
 
     //发送请求
     return new Promise(function (resolve, reject) {
       axios.post(api, data)
         .then(function (response) {
-          console.log(response);
           resolve(response.data)
         })
         .catch(function (error) {
@@ -94,8 +96,9 @@ export class PassportServiceService {
         })
     })
   }
+
   /** 
-   * 想服务端发送登录请求
+   * 向服务端发送登录请求
    * 
    */
   loginRequest(input: LoginVo, loginType: string) {
@@ -112,19 +115,19 @@ export class PassportServiceService {
     }
 
     //发送请求
-    const api = serveUrl + '/user/login'
+    const api = this.comService.transferUrl('/user/login')
     const that = this;
     return new Promise(function (resolve, reject) {
       axios.post(api, params)
         .then(function (response) {
-          console.log(response);
           
           if(response.data.code == 0){
             if(response.data.data.type == 3 || response.data.data.type == 4){
               resolve({
                 success: true
               })
-              that.getMeInfo(response.data)
+              that.meService.getMeInfo(response.data)
+              // that.getMeInfo(response.data)
             }
             else{
               reject({
@@ -147,35 +150,35 @@ export class PassportServiceService {
     })
 
   }
-  /**
-   * 根据登录返回，获取个人信息
-   */
-  getMeInfo(resp: any){
-    // 存入本地
-    const uid = resp.data.uid
-    this.localStorage.set(UID_KEY,uid)
+  // /**
+  //  * 根据登录返回，获取个人信息
+  //  */
+  // getMeInfo(resp: any){
+  //   // 存入本地
+  //   const uid = resp.data.uid
+  //   this.localStorage.set(UID_KEY,uid)
     
-    const type = resp.data.type
-    this.localStorage.set(USER_TYPE_KEY,type)
+  //   const type = resp.data.type
+  //   this.localStorage.set(USER_TYPE_KEY,type)
 
-    if(type == 3){
-      const api = serveUrl + '/teacher/' + uid 
-      this.http.get(api,this.httpOptions).subscribe((response:any)=>{
-        const teainfo:TeacherInfoVo = response.data
-        this.localStorage.set(USER_INFO_KEY,teainfo)
-      })
-    }
-    else if(type == 4){
-      const api = serveUrl + '/student/' + uid 
-      this.http.get(api,this.httpOptions).subscribe((response:any)=>{
-        const stuinfo:StuInfoVo = response.data
-        this.localStorage.set(USER_INFO_KEY,stuinfo)
-      })
-    }
-  }
+  //   if(type == 3){
+  //     const api = this.comService.transferUrl('/teacher/' + uid )
+  //     this.http.get(api,this.httpOptions).subscribe((response:any)=>{
+  //       const teainfo:TeacherInfoVo = response.data
+  //       this.localStorage.set(USER_INFO_KEY,teainfo)
+  //     })
+  //   }
+  //   else if(type == 4){
+  //     const api = this.comService.transferUrl('/student/' + uid )
+  //     this.http.get(api,this.httpOptions).subscribe((response:any)=>{
+  //       const stuinfo:StuInfoVo = response.data
+  //       this.localStorage.set(USER_INFO_KEY,stuinfo)
+  //     })
+  //   }
+  // }
   sendPwdForgotRequest(input:ForgotPwdVo){
     const that = this;
-    const api = serveUrl + '/user/pwd-forget'
+    const api = this.comService.transferUrl('/user/pwd-forget')
     return new Promise(function(resolve,reject){
       that.http.post(api,input,that.httpOptions).subscribe((response:any)=>{
         if(response.code == 0){

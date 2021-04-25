@@ -1,3 +1,4 @@
+import { CommonService } from './services/common.service';
 import { CourseItemComponent } from './component/course-item/course-item.component';
 import { IonicModule } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
@@ -19,7 +20,8 @@ import { ConfirmDirective } from './directives/confirm.directive';
     IonicModule
   ],
   providers:[
-    LocalStorageService
+    LocalStorageService,
+    CommonService
   ],
   exports: [
     CommonModule,
