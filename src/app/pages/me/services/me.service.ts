@@ -28,17 +28,17 @@ export class MeService {
    * @returns 
    */
   getSchoolsPage(page: number) {
-    const api = this.comService.transferUrl('/org/school-list')
+    const api = this.comService.transferUrl('/api/org/school-list')
     const params = new HttpParams().set('page', '' + page).set('size', '10')
     return this.getRequest(params, api)
   }
   getCollegePage(sch_code: string, page: number) {
-    const api = this.comService.transferUrl('/org/college-list')
+    const api = this.comService.transferUrl('/api/org/college-list')
     const params = new HttpParams().set('page', '' + page).set('size', '10').set('schCode', sch_code)
     return this.getRequest(params, api)
   }
   getMajorPage(sch_code: string, co_code: string, page: number) {
-    const api = this.comService.transferUrl('/org/major-list')
+    const api = this.comService.transferUrl('/api/org/major-list')
     const params = new HttpParams().set('page', '' + page).set('size', '10').set('colCode', co_code)
     return this.getRequest(params, api)
   }
@@ -52,7 +52,7 @@ export class MeService {
     const that = this
     return new Promise(function (resolve, reject) {
       that.http.get(api, { params }).subscribe((response: any) => {
-        if (response.code == 0) {
+        if (response.code == 2000) {
           resolve(response.data)
         }
         else {
@@ -68,8 +68,8 @@ export class MeService {
     })
   }
   getSchoolNameByCode(code) {
-    const api = this.comService.transferUrl('/org/school/' + code)
-    const params = new HttpParams().set('schCode ', '' + code)
+    const api = this.comService.transferUrl('/org/school')
+    const params = new HttpParams().set('schCode',code)
     const that = this
     return new Promise(function (resolve, reject) {
       if (code == null) {
@@ -77,15 +77,15 @@ export class MeService {
         return
       }
       that.getRequest(params, api).then((resp: any) => {
-        resolve(resp.sch_name)
+        resolve(resp.schName)
       }).catch(err => {
         console.error('err in getSchoolNameByCode')
       })
     })
   }
   getCollegeNameByCode(schCode,colCode) {
-    const api = this.comService.transferUrl('/org/college/')
-    const params = new HttpParams().set('schCode ', '' + schCode).set('colCode','' + colCode)
+    const api = this.comService.transferUrl('/org/college')
+    const params = new HttpParams().set('schCode', '' + schCode).set('colCode','' + colCode)
     const that = this
     return new Promise(function (resolve, reject) {
       if (schCode == null || colCode == null) {
@@ -93,15 +93,15 @@ export class MeService {
         return
       }
       that.getRequest(params, api).then((resp: any) => {
-        resolve(resp.co_name)
+        resolve(resp.colName)
       }).catch(err => {
         console.error('err in getCollegeNameByCode')
       })
     })
   }
   getMajorNameByCode(schCode,colCode,maCode) {
-    const api = this.comService.transferUrl('/org/major/')
-    const params = new HttpParams().set('schCode ', '' + schCode).set('colCode','' + colCode).set('majCode','' + maCode)
+    const api = this.comService.transferUrl('/org/major')
+    const params = new HttpParams().set('colCode','' + colCode).set('majCode','' + maCode)
     const that = this
     return new Promise(function (resolve, reject) {
       if (schCode == null || colCode == null || maCode == null) {
@@ -109,7 +109,7 @@ export class MeService {
         return
       }
       that.getRequest(params, api).then((resp: any) => {
-        resolve(resp.ma_name)
+        resolve(resp.majName)
       }).catch(err => {
         console.error('err in getMajorNameByCode')
       })
@@ -118,12 +118,12 @@ export class MeService {
   /**
    * 根据登录返回，获取个人信息
    */
-  getMeInfo(resp: any) {
+  async getMeInfo(resp: any) {
     // 存入本地
-    const uid = resp.data.uid
+    const uid = resp.data.user.info.tid
     this.localService.set(UID_KEY, uid)
 
-    const type = resp.data.type
+    const type = resp.data.user.userRole.id
     this.localService.set(USER_TYPE_KEY, type)
 
     //清空本地缓存
@@ -133,28 +133,44 @@ export class MeService {
     if(uid == null){
       return
     }
-
-    if (type == 3) {
-      const api = this.comService.transferUrl('/teacher/' + uid)
-      this.http.get(api, this.httpOptions).subscribe((response: any) => {
-        const teainfo: TeacherInfoVo = response.data
-        this.convertFromTeaDto(teainfo).then((localData) => {
-          this.localService.set(USER_INFO_KEY, localData)
-          this.pInfo = localData
-        })
-
-      })
+    let param = {
+      tid:uid
     }
-    else if (type == 4) {
-      const api = this.comService.transferUrl('/student/' + uid)
-      this.http.get(api, this.httpOptions).subscribe((response: any) => {
-        const stuinfo: StuInfoVo = response.data
-        this.convertFromStuDto(stuinfo).then((localData) => {
-          this.localService.set(USER_INFO_KEY, localData)
-          this.pInfo = localData
-        })
-      })
-    }
+
+    
+    this.pInfo = resp.data.user.info
+    this.pInfo.schoolCode = resp.data.user.info.school_code
+    this.pInfo.collegeCode = resp.data.user.info.college_code
+    this.pInfo.majorCode = resp.data.user.info.major_code
+    
+    this.pInfo.schoolName = <string>await this.getSchoolNameByCode(this.pInfo.schoolCode)
+    this.pInfo.collegeName = <string>await this.getCollegeNameByCode(this.pInfo.schoolCode,this.pInfo.collegeCode)
+    this.pInfo.majorName = <string>await this.getMajorNameByCode(this.pInfo.schoolCode,this.pInfo.collegeCode,this.pInfo.majorCode)
+    
+    console.log(this.pInfo)
+    this.localService.set(USER_INFO_KEY, this.pInfo)
+
+    // if (type == 3) {
+    //   const api = this.comService.transferUrl('/api/teacher/?tid=' + uid)
+    //   this.http.get(api,this.httpOptions ).subscribe((response: any) => {
+    //     const teainfo: TeacherInfoVo = response.data
+    //     this.convertFromTeaDto(teainfo).then((localData) => {
+    //       this.localService.set(USER_INFO_KEY, localData)
+    //       this.pInfo = localData
+    //     })
+
+    //   })
+    // }
+    // else if (type == 4) {
+    //   const api = this.comService.transferUrl('/api/student/?tid=' + uid)
+    //   this.http.get(api, this.httpOptions).subscribe((response: any) => {
+    //     const stuinfo: StuInfoVo = response.data
+    //     this.convertFromStuDto(stuinfo).then((localData) => {
+    //       this.localService.set(USER_INFO_KEY, localData)
+    //       this.pInfo = localData
+    //     })
+    //   })
+    // }
   }
   getPInfo() {
     if (this.pInfo == null) {
@@ -167,40 +183,40 @@ export class MeService {
     this.localService.set(USER_INFO_KEY,info)
   }
 
-  async convertFromStuDto(serveDto: StuInfoVo) {
-    let localData: PersonalInfoVo = {}
-    //格式转换
-    localData.phone = serveDto.st_phone
-    localData.name = serveDto.st_name
-    localData.gender = serveDto.st_sex
-    localData.identity = serveDto.st_id
-    localData.schoolCode = serveDto.st_school
-    localData.collegeCode = serveDto.st_college
-    localData.majorCode = serveDto.st_major
+  // async convertFromStuDto(serveDto: StuInfoVo) {
+  //   let localData: PersonalInfoVo = {}
+  //   //格式转换
+  //   localData.phone = serveDto.st_phone
+  //   localData.name = serveDto.st_name
+  //   localData.gender = serveDto.st_sex
+  //   localData.tid = serveDto.st_id
+  //   localData.schoolCode = serveDto.st_school
+  //   localData.collegeCode = serveDto.st_college
+  //   localData.majorCode = serveDto.st_major
 
-    localData.schoolName = <string>await this.getSchoolNameByCode(localData.schoolCode)
-    localData.collegeName = <string>await this.getCollegeNameByCode(localData.schoolCode,localData.collegeCode)
-    localData.majorName = <string>await this.getMajorNameByCode(localData.schoolCode,localData.collegeCode,localData.majorCode)
+  //   localData.schoolName = <string>await this.getSchoolNameByCode(localData.schoolCode)
+  //   localData.collegeName = <string>await this.getCollegeNameByCode(localData.schoolCode,localData.collegeCode)
+  //   localData.majorName = <string>await this.getMajorNameByCode(localData.schoolCode,localData.collegeCode,localData.majorCode)
 
-    return localData
-  }
-  async convertFromTeaDto(serveDto: TeacherInfoVo) {
-    let localData: PersonalInfoVo = {}
-    //格式转换
-    localData.phone = serveDto.te_phone
-    localData.name = serveDto.te_name
-    localData.gender = serveDto.te_sex
-    localData.identity = serveDto.te_id
-    localData.schoolCode = serveDto.te_school
-    localData.collegeCode = serveDto.te_college
-    localData.majorCode = serveDto.te_major
+  //   return localData
+  // }
+  // async convertFromTeaDto(serveDto: TeacherInfoVo) {
+  //   let localData: PersonalInfoVo = {}
+  //   //格式转换
+  //   localData.phone = serveDto.te_phone
+  //   localData.name = serveDto.te_name
+  //   localData.gender = serveDto.te_sex
+  //   localData.tid = serveDto.te_id
+  //   localData.schoolCode = serveDto.te_school
+  //   localData.collegeCode = serveDto.te_college
+  //   localData.majorCode = serveDto.te_major
 
-    localData.schoolName = <string>await this.getSchoolNameByCode(localData.schoolCode)
-    localData.collegeName = <string>await this.getCollegeNameByCode(localData.schoolCode,localData.collegeCode)
-    localData.majorName = <string>await this.getMajorNameByCode(localData.schoolCode,localData.collegeCode,localData.majorCode)
+  //   localData.schoolName = <string>await this.getSchoolNameByCode(localData.schoolCode)
+  //   localData.collegeName = <string>await this.getCollegeNameByCode(localData.schoolCode,localData.collegeCode)
+  //   localData.majorName = <string>await this.getMajorNameByCode(localData.schoolCode,localData.collegeCode,localData.majorCode)
 
-    return localData
-  }
+  //   return localData
+  // }
 
 
   sendUserUpdate(userInfo: PersonalInfoVo) {
@@ -215,7 +231,7 @@ export class MeService {
           te_name: userInfo.name,
           te_phone: userInfo.phone,
           te_sex: userInfo.gender,
-          te_id: userInfo.identity,
+          te_id: userInfo.tid,
 
           te_school: userInfo.schoolCode,
           te_college: userInfo.collegeCode,
@@ -229,7 +245,7 @@ export class MeService {
           st_name: userInfo.name,
           st_phone: userInfo.phone,
           st_sex: userInfo.gender,
-          st_id: userInfo.identity,
+          st_id: userInfo.tid,
 
           st_school: userInfo.schoolCode,
           st_college: userInfo.collegeCode,

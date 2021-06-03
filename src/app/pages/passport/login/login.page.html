@@ -33,6 +33,13 @@
               <p [hidden]="!pwdCheck.errors?.required" class="ion-padding-start">请输入密码</p>
             </ion-text> -->
 
+            <ion-item lines="full">
+              <ion-label position="fixed">图形验证码</ion-label>
+              <ion-input name="pic" type="number" required #pwdCheck="ngModel"
+              placeholder="请输入数值" [(ngModel)]="loginTable.picCode"></ion-input>
+              <ion-img [src]="checkImg" (click)="onClickImg()"></ion-img>
+            </ion-item>
+
 
 
             <ion-item lines="none">
@@ -76,6 +83,12 @@
               <p [hidden]="!codeCheck.errors?.required" class="ion-padding-start">请输入验证码</p>
               <p [hidden]="!codeCheck.errors?.pattern" class="ion-padding-start">验证码格式错误</p>
             </ion-text> -->
+            <ion-item lines="full">
+              <ion-label position="fixed">图形验证码</ion-label>
+              <ion-input name="pic" type="number" required #pwdCheck="ngModel"
+              placeholder="请输入数值" [(ngModel)]="loginTable.picCode"></ion-input>
+              <ion-img [src]="checkImg" (click)="onClickImg()"></ion-img>
+            </ion-item>
 
             <ion-item lines="none">
               <ion-button slot="start" fill="clear" size="small" (click)="onClickPwdLogin()">密码登录</ion-button>

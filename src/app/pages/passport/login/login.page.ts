@@ -18,9 +18,10 @@ export class LoginPage implements OnInit {
     phone: '',
     password: '',
     code: '',
-    type: '',
+    type: '1',
   }
   loginType: string = 'pwd'
+  checkImg:string = ''
   codeCmpt: any = {
     // valid: true,
     text: '获取验证码',
@@ -36,11 +37,39 @@ export class LoginPage implements OnInit {
   ngOnInit() {
     this.loginSlides.lockSwipeToNext(true)
     this.loginSlides.lockSwipeToPrev(true)
+    this.getCheckImg()
 
+  }
+  
+  onClickImg(){
+    this.getCheckImg()
+  }
+  /**
+   *获取图形验证码
+   *
+   * @memberof LoginPage
+   */
+  async getCheckImg(){
+    const toast = await this.toastCtl.create({
+      duration: 1500,
+      position: 'top'
+    });
+    
+    const that =this
+    this.passportService.getCheckImg().then((resp:any) => {
+      console.log(resp)
+      that.checkImg = resp.img
+      that.loginTable.uuid = resp.uuid
+    }).catch((err:any)=>{
+      toast.message = `发送失败【${err}】`
+      toast.present()
+      return
+    })
   }
 
   onClickSmsLogin() {
     this.loginType = 'code'
+    this.loginTable.type = '2'
 
     this.loginSlides.lockSwipeToNext(false)
     this.loginSlides.slideNext();
@@ -52,6 +81,7 @@ export class LoginPage implements OnInit {
    */
   onClickPwdLogin() {
     this.loginType = 'pwd'
+    this.loginTable.type = '1'
 
     this.loginSlides.lockSwipeToPrev(false)
     this.loginSlides.slidePrev();

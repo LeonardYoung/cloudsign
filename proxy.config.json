@@ -1,11 +1,11 @@
 {
     "/api": {
-        "target": "http://api.myard.cn:6677",
+        "target": "http://api.myard.cn:8888",
         "secure": false,
         "logLevel": "debug",
         "changeOrigin": true,
         "pathRewrite": {
-            "^/api": ""
+            "^/api": "/api"
         }
     }
    

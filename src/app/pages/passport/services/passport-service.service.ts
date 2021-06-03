@@ -36,21 +36,45 @@ export class PassportServiceService {
    */
   sendCodeRequest(phone: string) {
     const that = this;
-    const api = this.comService.transferUrl('/user/sms')
+    const api = this.comService.transferUrl('/code/smsCode')
     const params:any = {
       phone: phone
     }
     return new Promise(function(resolve,reject){
       that.http.post(api,params,that.httpOptions).subscribe((response:any)=>{
-        if (response.code == 0) {
-          that.smsCode = response.data
-          resolve(that.smsCode)
-        }
-        else{
-          reject(response.msg)
-        }
+        // if (response.code == 0) {
+        //   that.smsCode = response.data
+        //   resolve(that.smsCode)
+        // }
+        // else{
+        //   reject(response.msg)
+        // }
+        that.smsCode = '8888'
+        resolve(that.smsCode)
       },(error:HttpErrorResponse)=>{
         // let errmsg= `error:${error.error} \r\n msg:${error.message} \r\n status:${error.statusText}`
+        reject('网络请求失败')
+      })
+    })
+  }
+  /**
+   *获取图形验证码
+   *
+   * @memberof PassportServiceService
+   */
+  getCheckImg(){
+    const api = this.comService.transferUrl('/code/captcha')
+    const that = this;
+    return new Promise(function(resolve,reject){
+      that.http.get(api).subscribe((response:any)=>{
+        if(response.code == 2002){
+          resolve(response.data)
+        }
+        else{
+          reject(response.error)
+        }
+        
+      },(error:HttpErrorResponse)=>{
         reject('网络请求失败')
       })
     })
@@ -82,7 +106,7 @@ export class PassportServiceService {
    * @param data 用户数据
    */
   signupRequest(data: signupVO) {
-    const api = this.comService.transferUrl('/user/regist')
+    const api = this.comService.transferUrl('/auth/register')
     const that = this;
 
     //发送请求
@@ -102,32 +126,33 @@ export class PassportServiceService {
    * 
    */
   loginRequest(input: LoginVo, loginType: string) {
-    let params: LoginVo = {};
-    params.type = "1"
+    let params: any = {};
+    params.type = input.type
 
     if (loginType == 'pwd') {
-      params.username = input.username
-      params.password = input.password
+      params.identifier = input.username
+      params.credential = input.password
     }
     else if (loginType == 'code') {
-      params.phone = input.phone
-      params.code = input.code
+      params.identifier = input.phone
+      params.credential = input.code
     }
+    params.uuid = input.uuid
+    params.code = input.picCode
+    
 
     //发送请求
-    const api = this.comService.transferUrl('/user/login')
+    const api = this.comService.transferUrl('/auth/login')
     const that = this;
     return new Promise(function (resolve, reject) {
       axios.post(api, params)
-        .then(function (response) {
-          
-          if(response.data.code == 0){
-            if(response.data.data.type == 3 || response.data.data.type == 4){
+        .then(function (response:any) {
+          if(response.data.code == 2001){
+            if(response.data.data.user.userRole.id == 3 || response.data.data.user.userRole.id == 4){
               resolve({
                 success: true
               })
               that.meService.getMeInfo(response.data)
-              // that.getMeInfo(response.data)
             }
             else{
               reject({
@@ -137,14 +162,14 @@ export class PassportServiceService {
           }
           else{
             reject({
-              errmsg:response.data.msg
+              errmsg:response.data.error
             })
           }
           
         })
         .catch(function (error) {
           reject({
-            errmsg:'网络请求错误'
+            errmsg:'请求失败'
           })
         })
     })

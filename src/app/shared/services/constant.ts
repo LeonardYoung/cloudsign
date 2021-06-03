@@ -1,1 +1,1 @@
-export const serveUrl = 'http://api.myard.cn:6677'
+export const serveUrl = 'http://api.myard.cn:8888'

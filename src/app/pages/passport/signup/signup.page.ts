@@ -138,7 +138,7 @@ export class SignupPage implements OnInit {
     //发送注册请求
     this.passportServicec.signupRequest(fastvo)
       .then((resp: any) => {
-        if (resp.code == 0) {
+        if (resp.code == 2002) {
           //注册成功，显示下一页
           this.signupSlides.lockSwipeToNext(false);
           this.signupSlides.slideNext()
@@ -146,7 +146,7 @@ export class SignupPage implements OnInit {
           this.signupSlides.lockSwipeToNext(true);
         }
         else {
-          toast.message = `注册失败【${resp.msg}】`
+          toast.message = `注册失败【${resp.error}】`
           toast.present()
         }
 
