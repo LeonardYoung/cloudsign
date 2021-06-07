@@ -10,27 +10,27 @@ import { CourseInfo } from '../../teacher/vo/course-info';
 export class JoinCoursePage implements OnInit {
 
   testData: CourseInfo[] = [
-    {
-      courseName: '课1',
-      courseCode: 123456,
-      classRoom: '东3-101',
-      startTime: '13:00',
-      endTime: '18:00',
-    },
-    {
-      courseName: '课2',
-      courseCode: 123456,
-      classRoom: '东3-101',
-      startTime: '13:00',
-      endTime: '18:00',
-    },
-    {
-      courseName: '课3',
-      courseCode: 123456,
-      classRoom: '东3-101',
-      startTime: '13:00',
-      endTime: '18:00',
-    },
+    // {
+    //   coursename: '课1',
+    //   courseCode: 123456,
+    //   classRoom: '东3-101',
+    //   startTime: '13:00',
+    //   endTime: '18:00',
+    // },
+    // {
+    //   courseName: '课2',
+    //   courseCode: 123456,
+    //   classRoom: '东3-101',
+    //   startTime: '13:00',
+    //   endTime: '18:00',
+    // },
+    // {
+    //   coursename: '课3',
+    //   courseCode: 123456,
+    //   classRoom: '东3-101',
+    //   startTime: '13:00',
+    //   endTime: '18:00',
+    // },
   ]
   // deleteFlag = false
   constructor(private router:Router) { }
@@ -49,7 +49,7 @@ export class JoinCoursePage implements OnInit {
     this.router.navigate(['/tabs/student/detail'],{
       queryParams:{
         id:'test',
-        name:course.courseName
+        name:course.coursename
       }
     })
   }

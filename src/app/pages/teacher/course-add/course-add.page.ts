@@ -1,6 +1,7 @@
 import { CourseInfo } from './../vo/course-info';
 import { TeacherService } from './../service/teacher.service';
 import { Component, OnInit } from '@angular/core';
+import { ToastController, NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-course-add',
@@ -9,35 +10,32 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CourseAddPage implements OnInit {
 
-  courseAddVo: CourseInfo = {
-    courseName: '',
-    courseCode: null,
-    classRoom: '',
-    startTime: '',
-    endTime: '',
-  };
-  stime:string = ''
-  etime:string = ''
+  courseAddVo: CourseInfo = {};
 
-  constructor(private teacherService:TeacherService) { }
+
+  constructor(private teacherService:TeacherService,private toastctl: ToastController,private nav: NavController) { }
 
   ngOnInit() {
   }
-  sTimeChange(){
-    const dTime = new Date(Date.parse(this.stime));
-    this.courseAddVo.startTime = this.dateFormat("HH:MM",dTime)
-  }
 
-  eTimeChange(){
 
-    const dTime = new Date(Date.parse(this.etime));
-    this.courseAddVo.endTime = this.dateFormat("HH:MM",dTime)
-  }
-
-  onSubmit(form){
-    console.log(form)
+  async onSubmit(form){
+    const toast = await this.toastctl.create({
+      message: '',
+      duration: 3000,
+      position: 'top'
+    });
+    const that = this
+    
     if(form.valid){
-      this.teacherService.courseAddReq();
+      this.teacherService.courseAddReq(this.courseAddVo).then(()=>{
+        toast.message = '添加成功'
+        toast.present()
+        that.nav.back()
+      }).catch((err)=>{
+        toast.message = err
+        toast.present()
+      })
     }
     else{
       console.log('表单错误,pass')

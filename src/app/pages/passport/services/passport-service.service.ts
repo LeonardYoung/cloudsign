@@ -6,7 +6,7 @@ import { ForgotPwdVo } from './../forgot-passward/forgotPwdVo';
 import { LoginVo } from './../login/loginvo';
 import { serveUrl } from './../../../shared/services/constant';
 import { signupVO } from './../signup/signupvo';
-import { LocalStorageService, UID_KEY, USER_TYPE_KEY, USER_INFO_KEY } from './../../../shared/services/local-storage.service';
+import { LocalStorageService, UID_KEY, USER_TYPE_KEY, USER_INFO_KEY, TOKEN_KEY } from './../../../shared/services/local-storage.service';
 import { Injectable } from '@angular/core';
 import axios from 'axios'
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
@@ -146,13 +146,17 @@ export class PassportServiceService {
     const that = this;
     return new Promise(function (resolve, reject) {
       axios.post(api, params)
-        .then(function (response:any) {
+        .then(async function (response:any) {
           if(response.data.code == 2001){
             if(response.data.data.user.userRole.id == 3 || response.data.data.user.userRole.id == 4){
+              //保存token
+              that.localStorage.set(TOKEN_KEY,response.data.data.token)
+              //保存个人信息
+              await that.meService.getMeInfo(response.data)
               resolve({
                 success: true
               })
-              that.meService.getMeInfo(response.data)
+              
             }
             else{
               reject({

@@ -4,14 +4,14 @@
   </ion-thumbnail>
   <ion-label>
     <ion-text>
-      <h2>{{courseInfo.courseName}}</h2>
+      <h2>{{courseInfo.coursename}}</h2>
     </ion-text>
     <ion-text >
-      <p>上课时间：{{courseInfo.startTime}}</p>
+      <p>描述：{{courseInfo.detailinfo}}</p>
     </ion-text>
-    <ion-text>
+    <!-- <ion-text>
       <p> 教室：{{courseInfo.classRoom}} </p>
-    </ion-text>
+    </ion-text> -->
   </ion-label>
   <ion-note slot="end">
     <ion-button *ngIf="!deleteFlag" (click)="onClickCourse(courseInfo)" expand="block" fill="solid" >

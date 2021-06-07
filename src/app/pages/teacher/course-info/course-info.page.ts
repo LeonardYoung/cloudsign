@@ -10,13 +10,7 @@ import { CourseInfo } from '../vo/course-info';
 })
 export class CourseInfoPage implements OnInit {
 
-  courseInfo: CourseInfo = {
-    courseName: '',
-    courseCode: null,
-    classRoom: '',
-    startTime: '',
-    endTime: '',
-  };
+  courseInfo: CourseInfo = {};
 
   members: MemberInfo[] = [
     {
@@ -54,7 +48,7 @@ export class CourseInfoPage implements OnInit {
 
   constructor(private activeRouter: ActivatedRoute, private router: Router) {
     this.activeRouter.queryParams.subscribe(queryParsm => {
-      this.courseInfo.courseName = queryParsm.name
+      this.courseInfo.coursename = queryParsm.name
       // this.id = parseInt(quertParsm.id);
       // this.category = this.categoryService.get(this.id);
     });
@@ -71,7 +65,7 @@ export class CourseInfoPage implements OnInit {
     this.router.navigate(['/tabs/teacher/signin-record'], {
       queryParams: {
         id: 'test',
-        name: this.courseInfo.courseName
+        name: this.courseInfo.coursename
       }
     })
   }
