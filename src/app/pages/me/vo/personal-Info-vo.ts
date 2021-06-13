@@ -6,7 +6,8 @@ export interface PersonalInfoVo{
     user_id ?: string,
 
     phone ?: string, //手机号
-    tid ?: string,//学号、工号
+    tid ?: string,//学号
+    sid ?: string,//学号
     name ?: string,
     gender ?: string,
 

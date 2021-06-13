@@ -1,4 +1,4 @@
 export interface SchoolVo {
-    sch_code:string,
-    sch_name:string,
+    schCode:string,
+    schName:string,
 }

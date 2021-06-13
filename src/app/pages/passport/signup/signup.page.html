@@ -31,7 +31,7 @@
           <ion-item lines="full">
             <ion-label position="fixed">验证码</ion-label>
             <ion-input name="code" type="number" placeholder="请输入验证码" required pattern="[0-9]{4,}" #checkcode="ngModel"
-              [(ngModel)]="signup.msgcode"></ion-input>
+              [(ngModel)]="signup.smsCode"></ion-input>
             <!-- <ion-button (click)="getCode()" expand="block" fill="clear" shape="round">
               获取验证码
             </ion-button> -->
@@ -49,16 +49,16 @@
           </ion-item>
           <ion-grid fixed>
             <ion-row>
-              <ion-col size="6">
+              <ion-col size="12">
                 <ion-button [disabled]="phoneCodeForm.invalid" (click)="onNext()" expand="block" shape="round">
                   下一步
                 </ion-button>
               </ion-col>
-              <ion-col size="6">
+              <!-- <ion-col size="6">
                 <ion-button [disabled]="phoneCodeForm.invalid" (click)="onFastSignup()" expand="block" shape="round">
                   快速注册
                 </ion-button>
-              </ion-col>
+              </ion-col> -->
             </ion-row>
           </ion-grid>
 
@@ -92,7 +92,7 @@
           <ion-item lines="full">
             <ion-label position="fixed">工号</ion-label>
             <ion-input name="userNo" type="number" placeholder="请输入教工号/学号" required #userNumber="ngModel"
-              [(ngModel)]="signup.identity"></ion-input>
+              [(ngModel)]="signup.idNumber"></ion-input>
           </ion-item>
           <ion-text class="ion-text-left" color="danger" *ngIf="userNumber.invalid && userNumber.touched">
             <p [hidden]="!userNumber.errors?.required" class="ion-padding-start">请输入教工号/学号</p>

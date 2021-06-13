@@ -1,3 +1,4 @@
+import { LocalStorageService, USER_TYPE_KEY } from 'src/app/shared/services/local-storage.service';
 import { Router } from '@angular/router';
 import { CourseInfo } from './../vo/course-info';
 import { Component, OnInit } from '@angular/core';
@@ -11,33 +12,15 @@ import { TeacherService } from '../service/teacher.service';
 })
 export class CourseListPage implements OnInit,ViewWillEnter {
 
-  courseList: CourseInfo[] = [
-    // {
-    //   courseName: '课1',
-    //   courseCode: 123456,
-    //   classRoom: '东3-101',
-    //   startTime: '13:00',
-    //   endTime: '18:00',
-    // },
-    // {
-    //   courseName: '课2',
-    //   courseCode: 123456,
-    //   classRoom: '东3-101',
-    //   startTime: '13:00',
-    //   endTime: '18:00',
-    // },
-    // {
-    //   courseName: '课3',
-    //   courseCode: 123456,
-    //   classRoom: '东3-101',
-    //   startTime: '13:00',
-    //   endTime: '18:00',
-    // },
-  ]
+  courseList: CourseInfo[] = []
   deleteFlag = false
 
-  constructor(private router:Router,private teacherService:TeacherService) { }
+  constructor(private router:Router,private teacherService:TeacherService,private localStorage: LocalStorageService) { }
   ionViewWillEnter(): void {
+    const type = this.localStorage.get(USER_TYPE_KEY,{})
+    // 如果是学生，直接退出
+    if( type == 4)
+      return
     const that = this
     this.teacherService.courseListGet().then((data)=>{
       that.courseList = <any>data

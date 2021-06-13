@@ -115,7 +115,7 @@ export class PassportServiceService {
         .then(function (response) {
           resolve(response.data)
         })
-        .catch(function (error) {
+        .catch(function (error) { 
           reject(error)
         })
     })

@@ -20,7 +20,7 @@
         <ion-row>
           <ion-list>
             <ion-item *ngFor="let school of schoolList" (click)="onClickSchool(school)">
-              <ion-label>{{school.sch_name}}</ion-label>
+              <ion-label>{{school.schName}}</ion-label>
             </ion-item>
           </ion-list>
         </ion-row>
@@ -39,7 +39,7 @@
         <ion-row>
           <ion-list>
             <ion-item *ngFor="let college of collegeList" (click)="onClickCollege(college)">
-              <ion-label>{{college.co_name}}</ion-label>
+              <ion-label>{{college.colName}}</ion-label>
             </ion-item>
           </ion-list>
         </ion-row>
@@ -59,7 +59,7 @@
         <ion-row>
           <ion-list>
             <ion-item *ngFor="let major of majorList" (click)="onClickMajor(major)">
-              <ion-label>{{major.ma_name}}</ion-label>
+              <ion-label>{{major.majName}}</ion-label>
             </ion-item>
           </ion-list>
         </ion-row>

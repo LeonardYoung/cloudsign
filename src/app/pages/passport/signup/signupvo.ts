@@ -1,9 +1,8 @@
 export interface signupVO{
-    phone?: string, //手机号
-    identity?: string,//学工号
-    msgcode?: string,//验证码
+    idNumber?: string,//学工号
     password?: string,
-    username?: string,
+    phone?: string, //手机号
+    smsCode?: string,//验证码
     type?: string, //用户类型：学生、老师
-    email?: string,
+    username?: string,
 }

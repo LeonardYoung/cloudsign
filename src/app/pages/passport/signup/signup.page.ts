@@ -14,12 +14,10 @@ import { Observable } from 'rxjs';
 export class SignupPage implements OnInit {
   signup: signupVO = {
     phone: '', //手机号
-    identity: '',//学生、老师
     password: '',
     username: '',
-    email: '',
     type: '4',
-    msgcode: '',
+    smsCode: '',
   }
   codeCmpt: any = {
     // valid: true,
@@ -51,7 +49,7 @@ export class SignupPage implements OnInit {
       position: 'top'
     });
 
-    const codeRes = this.passportServicec.checkSmsCode(this.signup.msgcode)
+    const codeRes = this.passportServicec.checkSmsCode(this.signup.smsCode)
     if (codeRes.error != null) {
       toast.message = codeRes.error
       toast.present()
@@ -125,7 +123,7 @@ export class SignupPage implements OnInit {
     let fastvo: signupVO = {}
     fastvo.phone = this.signup.phone
     fastvo.username = this.signup.phone
-    fastvo.msgcode = this.signup.msgcode
+    fastvo.smsCode = this.signup.smsCode
     fastvo.type = '4'
     fastvo.password = 'abc'
     // this.signupReq(fastvo)
@@ -138,6 +136,7 @@ export class SignupPage implements OnInit {
     //发送注册请求
     this.passportServicec.signupRequest(fastvo)
       .then((resp: any) => {
+        console.log(resp)
         if (resp.code == 2002) {
           //注册成功，显示下一页
           this.signupSlides.lockSwipeToNext(false);
@@ -197,7 +196,7 @@ export class SignupPage implements OnInit {
     //发送注册请求
     this.passportServicec.signupRequest(this.signup)
       .then((resp: any) => {
-        if (resp.code == 0) {
+        if (resp.code == 2002) {
           //注册成功，显示下一页
           this.signupSlides.lockSwipeToNext(false);
           this.signupSlides.slideNext()
@@ -210,8 +209,8 @@ export class SignupPage implements OnInit {
 
       })
       .catch(err => {
-        console.log('请求失败，请检查网络', err)
-        toast.message = '请求失败，请检查网络'
+        console.log('请求失败', err)
+        toast.message = '请求失败'
         toast.present()
       })
 

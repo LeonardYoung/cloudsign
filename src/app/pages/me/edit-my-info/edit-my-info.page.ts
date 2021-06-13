@@ -27,7 +27,7 @@ export class EditMyInfoPage implements OnInit ,AfterViewInit{
     private activeRouter: ActivatedRoute) {
       const localInfo = this.meService.getPInfo()
       Object.assign(this.pInfo,localInfo)
-      // this.pInfo = this.meService.getPInfo()
+      console.log(this.pInfo)
       
      }
 

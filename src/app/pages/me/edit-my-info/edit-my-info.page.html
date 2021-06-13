@@ -20,9 +20,13 @@
         <ion-input type="text" name="userName" placeholder="请输入姓名" [(ngModel)]="pInfo.name"></ion-input>
       </ion-item>
 
-      <ion-item>
+      <ion-item *ngIf="userType==3">
+        <ion-label position="fixed">工号</ion-label>
+        <ion-input type="text" name="userNo" placeholder="请输入工号" [(ngModel)]="pInfo.tid"></ion-input>
+      </ion-item>
+      <ion-item *ngIf="userType==4">
         <ion-label position="fixed">学号</ion-label>
-        <ion-input type="text" name="userNo" placeholder="请输入学号" [(ngModel)]="pInfo.identity"></ion-input>
+        <ion-input type="text" name="userNo" placeholder="请输入学号" [(ngModel)]="pInfo.sid"></ion-input>
       </ion-item>
 
       <ion-item>

@@ -28,18 +28,18 @@ export class MeService {
    * @returns 
    */
   getSchoolsPage(page: number) {
-    const api = this.comService.transferUrl('/api/org/school-list')
+    const api = this.comService.transferUrl('/org/school-list')
     const params = new HttpParams().set('page', '' + page).set('size', '10')
     return this.getRequest(params, api)
   }
-  getCollegePage(sch_code: string, page: number) {
-    const api = this.comService.transferUrl('/api/org/college-list')
-    const params = new HttpParams().set('page', '' + page).set('size', '10').set('schCode', sch_code)
+  getCollegePage(schCode: string, page: number) {
+    const api = this.comService.transferUrl('/org/college-list')
+    const params = new HttpParams().set('page', '' + page).set('size', '10').set('schCode', schCode)
     return this.getRequest(params, api)
   }
-  getMajorPage(sch_code: string, co_code: string, page: number) {
-    const api = this.comService.transferUrl('/api/org/major-list')
-    const params = new HttpParams().set('page', '' + page).set('size', '10').set('colCode', co_code)
+  getMajorPage(schCode: string, colCode: string, page: number) {
+    const api = this.comService.transferUrl('/org/major-list')
+    const params = new HttpParams().set('page', '' + page).set('size', '10').set('colCode', colCode)
     return this.getRequest(params, api)
   }
   /**
@@ -69,7 +69,7 @@ export class MeService {
   }
   getSchoolNameByCode(code) {
     const api = this.comService.transferUrl('/org/school')
-    const params = new HttpParams().set('schCode',code)
+    const params = new HttpParams().set('schCode', code)
     const that = this
     return new Promise(function (resolve, reject) {
       if (code == null) {
@@ -83,9 +83,9 @@ export class MeService {
       })
     })
   }
-  getCollegeNameByCode(schCode,colCode) {
+  getCollegeNameByCode(schCode, colCode) {
     const api = this.comService.transferUrl('/org/college')
-    const params = new HttpParams().set('schCode', '' + schCode).set('colCode','' + colCode)
+    const params = new HttpParams().set('schCode', '' + schCode).set('colCode', '' + colCode)
     const that = this
     return new Promise(function (resolve, reject) {
       if (schCode == null || colCode == null) {
@@ -99,9 +99,9 @@ export class MeService {
       })
     })
   }
-  getMajorNameByCode(schCode,colCode,maCode) {
+  getMajorNameByCode(schCode, colCode, maCode) {
     const api = this.comService.transferUrl('/org/major')
-    const params = new HttpParams().set('colCode','' + colCode).set('majCode','' + maCode)
+    const params = new HttpParams().set('colCode', '' + colCode).set('majCode', '' + maCode)
     const that = this
     return new Promise(function (resolve, reject) {
       if (schCode == null || colCode == null || maCode == null) {
@@ -119,34 +119,44 @@ export class MeService {
    * 根据登录返回，获取个人信息
    */
   async getMeInfo(resp: any) {
-    // 存入本地
-    const uid = resp.data.user.info.tid
-    this.localService.set(UID_KEY, uid)
+
 
     const type = resp.data.user.userRole.id
     this.localService.set(USER_TYPE_KEY, type)
+
+    let uid = null
+    //教师
+    if (type == 3) {
+      uid = resp.data.user.info.tid
+      this.localService.set(UID_KEY, uid)
+    }
+    //学生
+    else if (type == 4) {
+      uid = resp.data.user.info.sid
+      this.localService.set(UID_KEY, uid)
+    }
 
     //清空本地缓存
     this.localService.set(USER_INFO_KEY, {})
 
     //快速注册时，不会有学号
-    if(uid == null){
+    if (uid == null) {
       return
     }
-    let param = {
-      tid:uid
-    }
+    // let param = {
+    //   tid: uid
+    // }
 
-    
+
     this.pInfo = resp.data.user.info
     this.pInfo.schoolCode = resp.data.user.info.school_code
     this.pInfo.collegeCode = resp.data.user.info.college_code
     this.pInfo.majorCode = resp.data.user.info.major_code
-    
+
     this.pInfo.schoolName = <string>await this.getSchoolNameByCode(this.pInfo.schoolCode)
-    this.pInfo.collegeName = <string>await this.getCollegeNameByCode(this.pInfo.schoolCode,this.pInfo.collegeCode)
-    this.pInfo.majorName = <string>await this.getMajorNameByCode(this.pInfo.schoolCode,this.pInfo.collegeCode,this.pInfo.majorCode)
-    
+    this.pInfo.collegeName = <string>await this.getCollegeNameByCode(this.pInfo.schoolCode, this.pInfo.collegeCode)
+    this.pInfo.majorName = <string>await this.getMajorNameByCode(this.pInfo.schoolCode, this.pInfo.collegeCode, this.pInfo.majorCode)
+
     console.log(this.pInfo)
     this.localService.set(USER_INFO_KEY, this.pInfo)
 
@@ -178,9 +188,9 @@ export class MeService {
     }
     return this.pInfo
   }
-  setPInfo(info){
+  setPInfo(info) {
     this.pInfo = info
-    this.localService.set(USER_INFO_KEY,info)
+    this.localService.set(USER_INFO_KEY, info)
   }
 
   // async convertFromStuDto(serveDto: StuInfoVo) {
@@ -219,56 +229,52 @@ export class MeService {
   // }
 
 
+  /**
+   *向服务器发送更改用户信息请求
+   *
+   * @param {PersonalInfoVo} userInfo
+   * @return {*} 
+   * @memberof MeService
+   */
   sendUserUpdate(userInfo: PersonalInfoVo) {
     const type = this.localService.get(USER_TYPE_KEY, {})
     const that = this
     return new Promise(function (resolve, reject) {
-      let api:any;
-      let params:any;
+      console.log(userInfo)
+      let api: any;
+      let params: any ={
+        college_code: userInfo.collegeCode,
+        
+        major_code: userInfo.majorCode,
+        name: userInfo.name,
+        school_code: userInfo.schoolCode,
+        phone: userInfo.phone
+
+      }
+      params.gender = userInfo.gender == '1' ? '男' : '女'
       if (type == 3) {
         api = that.comService.transferUrl('/teacher')
-        params = {
-          te_name: userInfo.name,
-          te_phone: userInfo.phone,
-          te_sex: userInfo.gender,
-          te_id: userInfo.tid,
+        params.tid = userInfo.tid
 
-          te_school: userInfo.schoolCode,
-          te_college: userInfo.collegeCode,
-          te_major: userInfo.majorCode,
-        }
-        
       }
       else if (type == 4) {
         api = that.comService.transferUrl('/student')
-        params ={
-          st_name: userInfo.name,
-          st_phone: userInfo.phone,
-          st_sex: userInfo.gender,
-          st_id: userInfo.tid,
-
-          st_school: userInfo.schoolCode,
-          st_college: userInfo.collegeCode,
-          st_major: userInfo.majorCode,
-        }
-        // that.http.put(api, params).subscribe((resp) => {
-        //   console.log(resp)
-        // })
+        params.sid = userInfo.sid
       }
-      that.http.put(api, params).subscribe((resp:any) => {
-        if(resp.code == 0){
+      that.http.put(api, params).subscribe((resp: any) => {
+        if (resp.code == 2006) {
+          that.localService.set(USER_INFO_KEY, userInfo)
           resolve({
             success: true
           })
-          that.localService.set(USER_INFO_KEY,that.pInfo)
-        }else{
+        } else {
           reject({
-            errmsg:resp.msg
+            errmsg: resp.msg
           })
         }
-      },(err)=>{
+      }, (err) => {
         reject({
-          errmsg:'网络请求错误'
+          errmsg: '网络请求错误'
         })
       })
     })

@@ -70,6 +70,7 @@ export class SchoolsPage implements OnInit {
 
     this.meService.getSchoolsPage(1).then((resp: any) => {
       this.schoolList = this.schoolList.concat(resp.pageData)
+      console.log(this.schoolList)
     }).catch(err => {
       this.toast.message = err.errmsg
       this.toast.present()
@@ -100,12 +101,12 @@ export class SchoolsPage implements OnInit {
   }
   /**
    * 点击学校
-   * @param sch_code 
+   * @param schCode 
    */
   onClickSchool(sch) {
     //保存当前学校选择
-    this.curChoice[0].name = sch.sch_name
-    this.curChoice[0].code = sch.sch_code
+    this.curChoice[0].name = sch.schName
+    this.curChoice[0].code = sch.schCode
     //清空上一次的学院选择
     this.collegeList = [];
     this.collegeData = {
@@ -114,7 +115,7 @@ export class SchoolsPage implements OnInit {
     }
     this.toNextSlide()
 
-    this.meService.getCollegePage(sch.sch_code, 1).then((resp: any) => {
+    this.meService.getCollegePage(sch.schCode, 1).then((resp: any) => {
       this.collegeList = this.collegeList.concat(resp.pageData)
     }).catch(err => {
       this.toast.message = err.errmsg
@@ -124,12 +125,12 @@ export class SchoolsPage implements OnInit {
 
   /**
    * 点击学院
-   * @param co_code 
+   * @param colCode 
    */
   onClickCollege(co) {
     //保存当前学院选择
-    this.curChoice[1].name = co.co_name
-    this.curChoice[1].code = co.co_code
+    this.curChoice[1].name = co.colName
+    this.curChoice[1].code = co.colCode
     //清空上一次的专业选择
     this.majorList = [];
     this.majorData = {
@@ -138,7 +139,7 @@ export class SchoolsPage implements OnInit {
     }
     this.toNextSlide()
 
-    this.meService.getMajorPage(this.curChoice[0].code, co.co_code, 1).then((resp: any) => {
+    this.meService.getMajorPage(this.curChoice[0].code, co.colCode, 1).then((resp: any) => {
       this.majorList = this.majorList.concat(resp.pageData)
     }).catch(err => {
       this.toast.message = err.errmsg
@@ -151,8 +152,8 @@ export class SchoolsPage implements OnInit {
    */
   onClickMajor(ma) {
     //保存当前专业选择
-    this.curChoice[2].name = ma.ma_name
-    this.curChoice[2].code = ma.ma_code
+    this.curChoice[2].name = ma.majName
+    this.curChoice[2].code = ma.majCode
     
     console.log(this.curChoice)
     this.meService.saveSchoolsChoice(this.curChoice)
