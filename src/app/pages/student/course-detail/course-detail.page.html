@@ -11,28 +11,36 @@
   <ion-list>
     <ion-item>
       <ion-label>课程名称</ion-label>
-      <ion-note>42</ion-note>
+      <ion-note>{{course.coursename}}</ion-note>
     </ion-item>
     <ion-item>
-      <ion-label>课程编号</ion-label>
-      <ion-note>42</ion-note>
+      <ion-label>课程ID</ion-label>
+      <ion-note>{{course.cid}}</ion-note>
     </ion-item>
     <ion-item>
       <ion-label>任课老师</ion-label>
-      <ion-note>42</ion-note>
+      <ion-note>{{course.teacher_name}}</ion-note>
     </ion-item>
     <ion-item>
-      <ion-label>上课时间</ion-label>
-      <ion-note>42</ion-note>
+      <ion-label>学校</ion-label>
+      <ion-note>{{course.school_name}}</ion-note>
     </ion-item>
     <ion-item>
-      <ion-label>上课地点</ion-label>
-      <ion-note>42</ion-note>
-    </ion-item> 
+      <ion-label>学院</ion-label>
+      <ion-note>{{course.college_name}}</ion-note>
+    </ion-item>
+    <ion-item>
+      <ion-label>学校</ion-label>
+      <ion-note>{{course.major_name}}</ion-note>
+    </ion-item>
+    
   </ion-list>
 
-  <ion-button (click)="onClickJoin()" expand="block" fill="solid"  class="join-btn">
+  <ion-button *ngIf="from == '1'" (click)="onClickJoin()" expand="block" fill="solid"  class="join-btn">
     加入班课
+  </ion-button>
+  <ion-button *ngIf="from == '0'" (click)="onClickJoin()" expand="block" fill="solid"  class="join-btn">
+    退出班课
   </ion-button>
 
 

@@ -4,7 +4,7 @@ import { TeacherInfoVo } from './../vo/teacherInfoVo';
 import { LocalStorageService, USER_TYPE_KEY, USER_INFO_KEY, UID_KEY } from './../../../shared/services/local-storage.service';
 import { PersonalInfoVo } from './../vo/personal-Info-vo';
 import { serveUrl } from './../../../shared/services/constant';
-import { HttpHeaders, HttpClient, HttpParams } from '@angular/common/http';
+import { HttpHeaders, HttpClient, HttpParams, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 @Injectable({
@@ -64,6 +64,24 @@ export class MeService {
         reject({
           errmsg: '网络请求失败'
         })
+      })
+    })
+  }
+  getTeacherById(id:string){
+    const api = this.comService.transferUrl('/teacher')
+    const params = new HttpParams().set('tid', id)
+    const that = this
+    return new Promise<any>(function (resolve, reject) {
+      that.http.get(api, { params }).subscribe((response: any) => {
+        if (response.code == 2000) {
+          resolve(response.data)
+        }
+        else {
+          reject(response.error)
+        }
+
+      }, (error: HttpErrorResponse) => {
+        reject('参数错误')
       })
     })
   }

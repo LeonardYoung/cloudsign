@@ -1,39 +1,30 @@
+import { StudentService } from './../service/student.service';
+import { CourseDetail } from './../course-detail/dto/courseDetail';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CourseInfo } from '../../teacher/vo/course-info';
+import { ViewWillEnter } from '@ionic/angular';
 
 @Component({
   selector: 'app-stu-course-list',
   templateUrl: './stu-course-list.page.html',
   styleUrls: ['./stu-course-list.page.scss'],
 })
-export class StuCourseListPage implements OnInit {
+export class StuCourseListPage implements OnInit,ViewWillEnter {
+  
 
-  testData: CourseInfo[] = [
-    // {
-    //   courseName: '课1',
-    //   courseCode: 123456,
-    //   classRoom: '东3-101',
-    //   startTime: '13:00',
-    //   endTime: '18:00',
-    // },
-    // {
-    //   courseName: '课2',
-    //   courseCode: 123456,
-    //   classRoom: '东3-101',
-    //   startTime: '13:00',
-    //   endTime: '18:00',
-    // },
-    // {
-    //   courseName: '课3',
-    //   courseCode: 123456,
-    //   classRoom: '东3-101',
-    //   startTime: '13:00',
-    //   endTime: '18:00',
-    // },
-  ]
+  courseList: CourseDetail[] = []
   deleteFlag = false
-  constructor(private router:Router) { }
+  constructor(private router:Router,private stuServer:StudentService) {
+   }
+   ionViewWillEnter():void{
+     const that =this
+     this.stuServer.getCourseOfStu().then((resp:any)=>{
+       console.log(resp)
+      that.courseList = resp
+     })
+    
+   }
 
   ngOnInit() {
   }
@@ -64,8 +55,8 @@ export class StuCourseListPage implements OnInit {
     console.log('-----',course);
     this.router.navigate(['/tabs/student/detail'],{
       queryParams:{
-        id:'test',
-        name:course.coursename
+        id:course.cid,
+        from:'0'
       }
     })
   }
@@ -79,7 +70,7 @@ export class StuCourseListPage implements OnInit {
     console.log(course);
     this.router.navigate(['/tabs/student/onekey'],{
       queryParams:{
-        id:'test',
+        id:course.cid,
         name:course.coursename
       }
     })

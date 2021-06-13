@@ -1,5 +1,6 @@
+import { StudentService } from './../service/student.service';
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { CourseInfo } from '../../teacher/vo/course-info';
 
 @Component({
@@ -9,33 +10,17 @@ import { CourseInfo } from '../../teacher/vo/course-info';
 })
 export class JoinCoursePage implements OnInit {
 
-  testData: CourseInfo[] = [
-    // {
-    //   coursename: '课1',
-    //   courseCode: 123456,
-    //   classRoom: '东3-101',
-    //   startTime: '13:00',
-    //   endTime: '18:00',
-    // },
-    // {
-    //   courseName: '课2',
-    //   courseCode: 123456,
-    //   classRoom: '东3-101',
-    //   startTime: '13:00',
-    //   endTime: '18:00',
-    // },
-    // {
-    //   coursename: '课3',
-    //   courseCode: 123456,
-    //   classRoom: '东3-101',
-    //   startTime: '13:00',
-    //   endTime: '18:00',
-    // },
-  ]
-  // deleteFlag = false
-  constructor(private router:Router) { }
+  cid:string = ''
+  courseList: CourseInfo[] = []
+  constructor(private router:Router, private stuService: StudentService) {
+    
+   }
 
   ngOnInit() {
+    const that = this
+    this.stuService.getAllCourse().then((resp:any)=>{
+      that.courseList = resp.pageData
+    })
   }
 
   /**
@@ -48,8 +33,8 @@ export class JoinCoursePage implements OnInit {
     console.log(course);
     this.router.navigate(['/tabs/student/detail'],{
       queryParams:{
-        id:'test',
-        name:course.coursename
+        id:course.cid,
+        from:'1'
       }
     })
   }

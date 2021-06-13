@@ -9,7 +9,7 @@
 
 <ion-content>
   <ion-list>
-    <ng-container *ngFor="let course of testData">
+    <ng-container *ngFor="let course of courseList">
       <app-course-item [courseInfo]="course" [haveSigninBtn]="0" 
       (infoClick)=onClickCourse($event) ></app-course-item>
     </ng-container>

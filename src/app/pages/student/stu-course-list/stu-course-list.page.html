@@ -20,7 +20,7 @@
 <ion-content color="light">
 
   <ion-list>
-    <ng-container *ngFor="let course of testData">
+    <ng-container *ngFor="let course of courseList">
       <app-course-item [courseInfo]="course" [haveSigninBtn]="1" [status]="deleteFlag" 
       (infoClick)=onClickCourse($event) (signinClick)=onClickSignin($event) 
       (deleteClick)=onClickDelete($event)></app-course-item>
