@@ -7,7 +7,7 @@
       </ion-button>
     </ion-buttons>
     <ion-buttons slot="end">
-      <ion-button *ngIf="!deleteFlag" expand="full" href="/tabs/teacher/add">
+      <ion-button *ngIf="!deleteFlag" expand="full" (click)="onClickAdd()">
         <ion-icon name="add"></ion-icon>
       </ion-button>
       <ion-button *ngIf="deleteFlag" expand="full" (click)="onClickFinish()">
@@ -18,12 +18,14 @@
 </ion-header>
 
 <ion-content color="light">
-  <ion-list>
+  <ion-list *ngIf="enable == true">
     <ng-container *ngFor="let course of courseList">
       <app-course-item [courseInfo]="course" [haveSigninBtn]="0" [status]="deleteFlag" 
       (infoClick)=onClickCourse($event)  
       (deleteClick)=onDeleteCourse($event)></app-course-item>
     </ng-container>
   </ion-list>
+
+  <ion-label *ngIf="enable == false">学生账号无法创建班课</ion-label>
 
 </ion-content>

@@ -14,6 +14,7 @@ export class StudentService {
   httpOptions = { //http请求头
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })//请求头进行转格式，防止出现415错误
   };
+  curTask:any = {}
   constructor(private http: HttpClient, private comService: CommonService, private localService: LocalStorageService
         , private meService:MeService) { }
 
@@ -35,6 +36,9 @@ export class StudentService {
         reject('参数错误')
       })
     })
+  }
+  getCurTask(){
+    return this.curTask
   }
   getCourseDetail(cid:string){
     const api = this.comService.transferUrl('/course')
@@ -81,6 +85,25 @@ export class StudentService {
       })
     })
   }
+  unjoinCourse(cid:string){
+    const pinfo = this.localService.get(USER_INFO_KEY,{})
+    const api = this.comService.transferUrl('/course/unselect')
+    const that = this;
+    const params = new HttpParams().set('sid', pinfo.sid).set('cid',cid)
+    return new Promise<void>(function (resolve, reject) {
+      that.http.get(api, { params }).subscribe((response: any) => {
+        if (response.code == 2005) {
+          resolve(response.data)
+        }
+        else {
+          reject(response.error)
+        }
+
+      }, (error: HttpErrorResponse) => {
+        reject('参数错误')
+      })
+    })
+  }
   getCourseOfStu(){
     const pinfo = this.localService.get(USER_INFO_KEY,{})
     const api = this.comService.transferUrl('/course/s')
@@ -89,6 +112,48 @@ export class StudentService {
     return new Promise<void>(function (resolve, reject) {
       that.http.get(api, { params }).subscribe((response: any) => {
         if (response.code == 2000) {
+          resolve(response.data)
+        }
+        else {
+          reject(response.error)
+        }
+
+      }, (error: HttpErrorResponse) => {
+        reject('参数错误')
+      })
+    })
+  }
+  getCheckTasks(cid:string){
+    const api = this.comService.transferUrl('/check')
+    const that = this;
+    const params = new HttpParams().set('cid', cid)
+    return new Promise<void>(function (resolve, reject) {
+      that.http.get(api, { params }).subscribe((response: any) => {
+        if (response.code == 2000) {
+          that.curTask = response.data
+          resolve(response.data)
+        }
+        else {
+          reject(response.error)
+        }
+
+      }, (error: HttpErrorResponse) => {
+        reject('参数错误')
+      })
+    })
+  }
+  CheckIn(cid:string){
+    const api = this.comService.transferUrl('/check')
+    const pinfo = this.localService.get(USER_INFO_KEY,{})
+
+    const that = this;
+    const params = {
+      classId : cid,
+      sid: pinfo.sid
+    }
+    return new Promise<void>(function (resolve, reject) {
+      that.http.post(api, params ).subscribe((response: any) => {
+        if (response.code == 2007) {
           resolve(response.data)
         }
         else {

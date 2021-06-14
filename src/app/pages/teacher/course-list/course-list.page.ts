@@ -2,7 +2,7 @@ import { LocalStorageService, USER_TYPE_KEY } from 'src/app/shared/services/loca
 import { Router } from '@angular/router';
 import { CourseInfo } from './../vo/course-info';
 import { Component, OnInit } from '@angular/core';
-import { ViewWillEnter } from '@ionic/angular';
+import { NavController, ViewWillEnter } from '@ionic/angular';
 import { TeacherService } from '../service/teacher.service';
 
 @Component({
@@ -14,13 +14,20 @@ export class CourseListPage implements OnInit,ViewWillEnter {
 
   courseList: CourseInfo[] = []
   deleteFlag = false
+  enable = false
 
-  constructor(private router:Router,private teacherService:TeacherService,private localStorage: LocalStorageService) { }
+  constructor(private router:Router,private teacherService:TeacherService,
+    private localServe: LocalStorageService,
+    private localStorage: LocalStorageService,
+    private navCtl:NavController) { }
   ionViewWillEnter(): void {
-    const type = this.localStorage.get(USER_TYPE_KEY,{})
-    // 如果是学生，直接退出
-    if( type == 4)
-      return
+    const userType = this.localServe.get(USER_TYPE_KEY,{}) 
+     if(userType == 4){
+       this.enable = false
+       return
+     }else{
+       this.enable = true
+     }
     const that = this
     this.teacherService.courseListGet().then((data)=>{
       that.courseList = <any>data
@@ -36,6 +43,11 @@ export class CourseListPage implements OnInit,ViewWillEnter {
    */
   onClickEdit() {
     this.deleteFlag = true;
+  }
+  onClickAdd(){
+    if(this.enable)
+      this.navCtl.navigateForward('/tabs/teacher/add')
+
   }
   /**
    * 监听完成按钮
