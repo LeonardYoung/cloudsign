@@ -18,7 +18,9 @@ export class CourseInfoPage implements OnInit, ViewWillEnter {
   members: MemberInfo[] = [  ]
 
 
-  constructor(private activeRouter: ActivatedRoute, private router: Router, private teaServer: TeacherService
+  constructor(private activeRouter: ActivatedRoute, 
+    private router: Router, 
+    private teaServer: TeacherService
     ,private navCtl:NavController) {
     const that = this
     this.activeRouter.queryParams.subscribe(queryParsm => {
@@ -44,12 +46,7 @@ export class CourseInfoPage implements OnInit, ViewWillEnter {
    * @memberof CourseInfoPage
    */
   onClickRecord() {
-    this.router.navigate(['/tabs/teacher/signin-record'], {
-      queryParams: {
-        id: 'test',
-        name: this.courseInfo.coursename
-      }
-    })
+    this.navCtl.navigateForward('/tabs/teacher/signin-record')
   }
   onClickCheck(){
     this.navCtl.navigateForward('/tabs/teacher/action/main')

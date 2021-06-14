@@ -1,5 +1,5 @@
 import { TeacherService } from './../service/teacher.service';
-import { ViewWillEnter } from '@ionic/angular';
+import { ViewWillEnter, NavController } from '@ionic/angular';
 import { ActivatedRoute } from '@angular/router';
 import { MemberInfo } from './../vo/member-info';
 import { Component, OnInit } from '@angular/core';
@@ -15,7 +15,9 @@ export class MemberPage implements OnInit,ViewWillEnter {
     name:''
   }
 
-  constructor(private activateRoute: ActivatedRoute, private teaService:TeacherService) {
+  constructor(private activateRoute: ActivatedRoute, 
+    private teaService:TeacherService,
+    private navCtl:NavController) {
     const that = this
     this.activateRoute.queryParams.subscribe(queryParsm => {
       this.member.sid = queryParsm.sid
@@ -32,6 +34,9 @@ export class MemberPage implements OnInit,ViewWillEnter {
   }
 
   ngOnInit() {
+  }
+  onClickDetail(){
+    this.navCtl.navigateForward("/tabs/teacher/signin-detail")
   }
 
 

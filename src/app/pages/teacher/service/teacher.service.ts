@@ -17,7 +17,9 @@ export class TeacherService {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })//请求头进行转格式，防止出现415错误
   };
   curMembers: MemberInfo[] = []
+  curSid: string = ''
   curCid: string = ''
+  taskIdMap = new Map()
   constructor(private http: HttpClient, private comService: CommonService, 
     private localService: LocalStorageService,
     private meService: MeService) { }
@@ -149,6 +151,7 @@ export class TeacherService {
     })
   }
   async getMemberBySid<MemberInfo>(sid: string) {
+    this.curSid = sid
     for (const m of this.curMembers) {
       if (m.sid == sid) {
         m.school_name = <string>await this.meService.getSchoolNameByCode(m.school_code)
@@ -157,6 +160,61 @@ export class TeacherService {
         return m
       }
     }
+  }
+  /**
+   *根据任务号和班课号,获取所有学生的签到状态
+   *
+   * @return {*} 
+   * @memberof TeacherService
+   */
+   getCheckResult(){
+    const api = this.comService.transferUrl('/check/result')
+    const that = this;
+    const tid = this.taskIdMap.get(this.curCid)
+    return new Promise<void>(function (resolve, reject) {
+      if(tid == null){
+        reject(0)
+        return
+      }
+      const params = new HttpParams().set('cid', that.curCid).set('tid',tid)
+      that.http.get(api, { params }).subscribe((response: any) => {
+        if (response.code == 2000) {
+          resolve(response.data)
+        }
+        else {
+          reject(response.error)
+        }
+
+      }, (error: HttpErrorResponse) => {
+        reject('网络请求失败')
+      })
+    })
+  }
+  /**
+   *获取学生的签到明细
+   *
+   * @param {*} cid
+   * @param {*} sid
+   * @return {*} 
+   * @memberof TeacherService
+   */
+  getCheckLog(){
+    const api = this.comService.transferUrl('/check/log')
+    const that = this;
+    const params = new HttpParams().set('cid', this.curCid).set('sid',this.curSid)
+    return new Promise<void>(function (resolve, reject) {
+      that.http.get(api, { params }).subscribe((response: any) => {
+        if (response.code == 2000) {
+          resolve(response.data)
+        }
+        else {
+          reject(response.error)
+        }
+
+      }, (error: HttpErrorResponse) => {
+        reject('网络请求失败')
+      })
+    })
   }
   /**
    *发起定时签到任务
@@ -177,6 +235,8 @@ export class TeacherService {
       that.http.post(api,task, option).subscribe((response: any) => {
         console.log(response)
         if (response.code == 2004) {
+          // 保存taskid
+          that.taskIdMap.set(that.curCid,response.data)
           resolve(response.data)
         }
         else {
@@ -208,6 +268,7 @@ export class TeacherService {
       that.http.post(api,task, option).subscribe((response: any) => {
         console.log(response)
         if (response.code == 2004) {
+          that.taskIdMap.set(that.curCid,response.data)
           resolve(response.data)
         }
         else {

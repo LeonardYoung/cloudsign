@@ -123,6 +123,13 @@ export class StudentService {
       })
     })
   }
+  /**
+   * 获取签到任务
+   *
+   * @param {string} cid
+   * @return {*} 
+   * @memberof StudentService
+   */
   getCheckTasks(cid:string){
     const api = this.comService.transferUrl('/check')
     const that = this;
@@ -142,6 +149,13 @@ export class StudentService {
       })
     })
   }
+  /**
+   *学生签到
+   *
+   * @param {string} cid
+   * @return {*} 
+   * @memberof StudentService
+   */
   CheckIn(cid:string){
     const api = this.comService.transferUrl('/check')
     const pinfo = this.localService.get(USER_INFO_KEY,{})
