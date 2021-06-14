@@ -1,3 +1,5 @@
+import { TeacherService } from './../service/teacher.service';
+import { ViewWillEnter, NavController } from '@ionic/angular';
 import { MemberInfo } from './../vo/member-info';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -8,50 +10,30 @@ import { CourseInfo } from '../vo/course-info';
   templateUrl: './course-info.page.html',
   styleUrls: ['./course-info.page.scss'],
 })
-export class CourseInfoPage implements OnInit {
+export class CourseInfoPage implements OnInit, ViewWillEnter {
 
   courseInfo: CourseInfo = {};
+  cid: string = null
 
-  members: MemberInfo[] = [
-    {
-      name: '学生1',
-      No: '200327100',
-      gender: 'boy',
-      school: '福州大学',
-      depart: '数计学院',
-      totalExp: 400,
-      actualExp: 300,
-      level: '优秀'
-    },
-    {
-      name: '学生2',
-      No: '200327101',
-      gender: 'boy',
-      school: '福州大学',
-      depart: '数计学院',
-      totalExp: 400,
-      actualExp: 300,
-      level: '优秀'
-    },
-    {
-      name: '学生3',
-      No: '200327102',
-      gender: 'boy',
-      school: '福州大学',
-      depart: '数计学院',
-      totalExp: 400,
-      actualExp: 300,
-      level: '优秀'
-    },
-  ]
+  members: MemberInfo[] = [  ]
 
 
-  constructor(private activeRouter: ActivatedRoute, private router: Router) {
+  constructor(private activeRouter: ActivatedRoute, private router: Router, private teaServer: TeacherService
+    ,private navCtl:NavController) {
+    const that = this
     this.activeRouter.queryParams.subscribe(queryParsm => {
-      this.courseInfo.coursename = queryParsm.name
-      // this.id = parseInt(quertParsm.id);
-      // this.category = this.categoryService.get(this.id);
+      let cid = that.cid
+      if(queryParsm.id !== null){
+        cid = queryParsm.id
+      }
+
+      this.teaServer.getStuOfCourse(cid).then((resp: any) => {
+        that.members = resp
+      })
     });
+  }
+  ionViewWillEnter() {
+
   }
 
   ngOnInit() {
@@ -68,6 +50,9 @@ export class CourseInfoPage implements OnInit {
         name: this.courseInfo.coursename
       }
     })
+  }
+  onClickCheck(){
+    this.navCtl.navigateForward('/tabs/teacher/action/main')
   }
 
 }

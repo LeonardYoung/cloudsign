@@ -55,8 +55,7 @@ export class CourseListPage implements OnInit,ViewWillEnter {
     console.log(course);
     this.router.navigate(['/tabs/teacher/info'],{
       queryParams:{
-        id:'test',
-        name:course.coursename
+        id:course.cid
       }
     })
   }

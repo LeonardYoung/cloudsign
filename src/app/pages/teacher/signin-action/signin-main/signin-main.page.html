@@ -10,10 +10,10 @@
 <ion-content>
 
   <ion-list>
-    <ion-item detail href="/tabs/teacher/action/onekey">
+    <ion-item detail (click)="onClickOneKey()" >
       <ion-label>一键签到</ion-label>
     </ion-item>
-    <ion-item detail href="/tabs/teacher/action/gesture">
+    <ion-item detail (click)="onClickGesture()">
       <ion-label>手势签到</ion-label>
     </ion-item>
   </ion-list>

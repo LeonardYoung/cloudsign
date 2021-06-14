@@ -1,3 +1,4 @@
+import { NavController } from '@ionic/angular';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -7,9 +8,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SigninMainPage implements OnInit {
 
-  constructor() { }
+  constructor(private navCrl:NavController) { }
 
   ngOnInit() {
+  }
+  onClickOneKey(){
+    this.navCrl.navigateForward("/tabs/teacher/action/onekey")
+  }
+  onClickGesture(){
+    this.navCrl.navigateForward("/tabs/teacher/action/gesture")
   }
 
 }

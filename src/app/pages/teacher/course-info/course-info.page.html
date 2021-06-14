@@ -12,7 +12,7 @@
 
   <ion-list>
     <ion-item *ngFor="let member of members"  routerLink="/tabs/teacher/member" 
-    [queryParams]="{No:member.No}">
+    [queryParams]="{sid:member.sid}">
       <ion-thumbnail slot="start">
         <img src="assets/img/c_goodspicture.png"  />
       </ion-thumbnail>
@@ -21,10 +21,10 @@
           <h2>{{member.name}}</h2>
         </ion-text>
         <ion-text >
-          <p>{{member.No}}</p>
+          <p>{{member.sid}}</p>
         </ion-text>
       </ion-label>
-      <ion-note>经验值：{{member.exp}}</ion-note>
+      <ion-note>经验值：{{member.score}}</ion-note>
     </ion-item>
   </ion-list>
 
@@ -36,7 +36,7 @@
         </ion-button>
       </ion-col>
       <ion-col size="6">
-        <ion-button  href="/tabs/teacher/action/main" expand="block" fill="solid">
+        <ion-button   (click)="onClickCheck()" expand="block" fill="solid">
           发起签到
         </ion-button>
       </ion-col>

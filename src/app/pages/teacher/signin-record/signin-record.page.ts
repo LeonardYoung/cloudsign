@@ -13,70 +13,70 @@ export class SigninRecordPage implements OnInit {
   courseInfo: CourseInfo = {};
 
   absenceList: MemberInfo[] = [
-    {
-      name: '学生1',
-      No: '200327100',
-      gender: 'boy',
-      school: '福州大学',
-      depart: '数计学院',
-      totalExp: 400,
-      actualExp: 300,
-      level: '优秀'
-    },
-    {
-      name: '学生2',
-      No: '200327100',
-      gender: 'boy',
-      school: '福州大学',
-      depart: '数计学院',
-      totalExp: 400,
-      actualExp: 300,
-      level: '优秀'
-    },
+    // {
+    //   name: '学生1',
+    //   No: '200327100',
+    //   gender: 'boy',
+    //   school: '福州大学',
+    //   depart: '数计学院',
+    //   totalExp: 400,
+    //   actualExp: 300,
+    //   level: '优秀'
+    // },
+    // {
+    //   name: '学生2',
+    //   No: '200327100',
+    //   gender: 'boy',
+    //   school: '福州大学',
+    //   depart: '数计学院',
+    //   totalExp: 400,
+    //   actualExp: 300,
+    //   level: '优秀'
+    // },
   ]
   lateList: MemberInfo[] = [
-    {
-      name: '学生1',
-      No: '200327100',
-      gender: 'boy',
-      school: '福州大学',
-      depart: '数计学院',
-      totalExp: 400,
-      actualExp: 300,
-      level: '优秀'
-    },
-    {
-      name: '学生2',
-      No: '200327100',
-      gender: 'boy',
-      school: '福州大学',
-      depart: '数计学院',
-      totalExp: 400,
-      actualExp: 300,
-      level: '优秀'
-    },
+    // {
+    //   name: '学生1',
+    //   No: '200327100',
+    //   gender: 'boy',
+    //   school: '福州大学',
+    //   depart: '数计学院',
+    //   totalExp: 400,
+    //   actualExp: 300,
+    //   level: '优秀'
+    // },
+    // {
+    //   name: '学生2',
+    //   No: '200327100',
+    //   gender: 'boy',
+    //   school: '福州大学',
+    //   depart: '数计学院',
+    //   totalExp: 400,
+    //   actualExp: 300,
+    //   level: '优秀'
+    // },
   ]
   normalList: MemberInfo[] = [
-    {
-      name: '学生1',
-      No: '200327100',
-      gender: 'boy',
-      school: '福州大学',
-      depart: '数计学院',
-      totalExp: 400,
-      actualExp: 300,
-      level: '优秀'
-    },
-    {
-      name: '学生2',
-      No: '200327100',
-      gender: 'boy',
-      school: '福州大学',
-      depart: '数计学院',
-      totalExp: 400,
-      actualExp: 300,
-      level: '优秀'
-    },
+    // {
+    //   name: '学生1',
+    //   No: '200327100',
+    //   gender: 'boy',
+    //   school: '福州大学',
+    //   depart: '数计学院',
+    //   totalExp: 400,
+    //   actualExp: 300,
+    //   level: '优秀'
+    // },
+    // {
+    //   name: '学生2',
+    //   No: '200327100',
+    //   gender: 'boy',
+    //   school: '福州大学',
+    //   depart: '数计学院',
+    //   totalExp: 400,
+    //   actualExp: 300,
+    //   level: '优秀'
+    // },
   ]
 
   constructor(private activeRouter: ActivatedRoute) {
