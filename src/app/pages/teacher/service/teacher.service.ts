@@ -38,7 +38,7 @@ export class TeacherService {
     return new Promise<void>(function (resolve, reject) {
       that.http.post(api, course, that.httpOptions).subscribe((response: any) => {
         if (response.code == 2004) {
-          resolve()
+          resolve(response.data)
         }
         else {
           reject(response.error)

@@ -40,7 +40,15 @@ export class StudentService {
   getCurTask(){
     return this.curTask
   }
-  getCourseDetail(cid:string){
+  /**
+   *根据cid获取班课
+   *
+   * @param {string} cid
+   * @param {boolean} [detail=true]
+   * @return {*} 
+   * @memberof StudentService
+   */
+  getCourseDetail(cid:string, detail:boolean=true){
     const api = this.comService.transferUrl('/course')
     const that = this;
     const params = new HttpParams().set('cid', cid)
@@ -48,13 +56,14 @@ export class StudentService {
       that.http.get(api, { params }).subscribe(async (response: any) => {
         if (response.code == 2000) {
           let course: CourseDetail = response.data
-          course.school_name = <string>await that.meService.getSchoolNameByCode(course.school_code)
-          course.college_name = <string>await that.meService.getCollegeNameByCode(course.school_code, course.college_code)
-          course.major_name = <string>await that.meService.getMajorNameByCode(course.school_code, course.college_code,course.major_code)
-
-          const teainfo = await that.meService.getTeacherById(course.teacher_tid)
-          course.teacher_name = teainfo.name
-
+          if(detail){
+            course.school_name = <string>await that.meService.getSchoolNameByCode(course.school_code)
+            course.college_name = <string>await that.meService.getCollegeNameByCode(course.school_code, course.college_code)
+            course.major_name = <string>await that.meService.getMajorNameByCode(course.school_code, course.college_code,course.major_code)
+  
+            const teainfo = await that.meService.getTeacherById(course.teacher_tid)
+            course.teacher_name = teainfo.name
+          }
           resolve(course)
         }
         else {

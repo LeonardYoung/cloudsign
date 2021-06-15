@@ -4,10 +4,15 @@
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/tabs/student/list" text="返回"></ion-back-button>
     </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button (click)="onClickQrCode()">
+        <ion-icon slot="start" name="scan-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<!-- <ion-content>
   <ion-list>
     <ng-container *ngFor="let course of courseList">
       <app-course-item [courseInfo]="course" [haveSigninBtn]="0" 
@@ -15,4 +20,19 @@
     </ng-container>
   </ion-list>
 
+</ion-content> -->
+<ion-content>
+  <ion-item class="margintop">
+    <ion-label position="fixed">课程号</ion-label>
+    <ion-input type="number" name="cid" placeholder="请输入课程号" [(ngModel)]="cid"></ion-input>
+  </ion-item>
+
+  <ng-container *ngFor="let course of courseList">
+    <app-course-item [courseInfo]="course" [haveSigninBtn]="0" 
+    (infoClick)=onClickCourse($event) ></app-course-item>
+  </ng-container>
+
+  <ion-button  class="full-btn margintop" (click)="onClickConfirm()" expand="block" shape="round">
+    下一步
+  </ion-button>
 </ion-content>

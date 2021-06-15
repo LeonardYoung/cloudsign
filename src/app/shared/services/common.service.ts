@@ -6,8 +6,8 @@ import { Injectable } from '@angular/core';
 })
 export class CommonService {
 
-  // private dev:boolean = false;
-  private dev:boolean = true;
+  private dev:boolean = false;
+  // private dev:boolean = true;
 
   constructor() { }
 
@@ -17,7 +17,7 @@ export class CommonService {
       return '/api' + origin
     }
     else{
-      return serveUrl + origin
+      return  serveUrl + '/api' + origin
     }
   }
 }

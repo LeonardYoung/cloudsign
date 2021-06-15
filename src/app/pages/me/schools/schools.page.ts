@@ -157,8 +157,15 @@ export class SchoolsPage implements OnInit {
     
     console.log(this.curChoice)
     this.meService.saveSchoolsChoice(this.curChoice)
-    // this.router.navigateByUrl('/tabs/me/edit')
-    this.router.navigate(['/tabs/me/edit'],{
+    let url = ' '
+    if( this.meService.schoolsChoiceFrom == 'course'){
+      url = '/tabs/teacher/add'
+      this.meService.schoolsChoiceFrom = 'me'
+    }
+    else{
+      url = '/tabs/me/edit'
+    }
+    this.router.navigate([url],{
       queryParams:{
         schoolChange:true
       }

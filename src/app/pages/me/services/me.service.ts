@@ -17,6 +17,7 @@ export class MeService {
   };
 
   private schoolsChoice: any[]
+  public schoolsChoiceFrom  = 'me'
   private pInfo: PersonalInfoVo;
 
   constructor(private http: HttpClient, private localService: LocalStorageService, private comService: CommonService) { }
