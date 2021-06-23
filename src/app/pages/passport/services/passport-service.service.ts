@@ -207,17 +207,22 @@ export class PassportServiceService {
   // }
   sendPwdForgotRequest(input:ForgotPwdVo){
     const that = this;
-    const api = this.comService.transferUrl('/user/pwd-forget')
+    const api = this.comService.transferUrl('/auth/pwd-forget')
+    let param = {
+      newPass: input.newPass,
+      phone:input.phone,
+      smsCode: input.code
+    }
     return new Promise(function(resolve,reject){
-      that.http.post(api,input,that.httpOptions).subscribe((response:any)=>{
-        if(response.code == 0){
+      that.http.post(api,param,that.httpOptions).subscribe((response:any)=>{
+        if(response.code == 2003){
           resolve({
             success: true
           })
         }
         else{
           reject({
-            errmsg:response.msg
+            errmsg:response.error
           })
         }
       },(err:any)=>{

@@ -45,6 +45,9 @@ export class CourseDetailPage implements OnInit {
       toast.message = '添加成功'
       toast.present()
       that.navCtl.back()
+    }).catch((err)=>{
+      toast.message = err
+      toast.present()
     })
   }
 

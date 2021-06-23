@@ -1,7 +1,7 @@
 import { CommonService } from './../../../shared/services/common.service';
 import { StuInfoVo } from './../vo/stuInfoVo';
 import { TeacherInfoVo } from './../vo/teacherInfoVo';
-import { LocalStorageService, USER_TYPE_KEY, USER_INFO_KEY, UID_KEY } from './../../../shared/services/local-storage.service';
+import { LocalStorageService, USER_TYPE_KEY, USER_INFO_KEY, UID_KEY, USER_ID_KEY } from './../../../shared/services/local-storage.service';
 import { PersonalInfoVo } from './../vo/personal-Info-vo';
 import { serveUrl } from './../../../shared/services/constant';
 import { HttpHeaders, HttpClient, HttpParams, HttpErrorResponse } from '@angular/common/http';
@@ -65,6 +65,29 @@ export class MeService {
         reject({
           errmsg: '网络请求失败'
         })
+      })
+    })
+  }
+  passwordChange(pwds){
+    const api = this.comService.transferUrl('/auth/pwd-reset')
+    const uid = this.localService.get(USER_ID_KEY,{})
+    const params = {
+      newPass: pwds.newPwd,
+      oldPass: pwds.oldPwd,
+      uid:uid
+    }
+    const that = this
+    return new Promise<any>(function (resolve, reject) {
+      that.http.post(api, params ).subscribe((response: any) => {
+        if (response.code == 2000) {
+          resolve(response.data)
+        }
+        else {
+          reject(response.error)
+        }
+
+      }, (error: HttpErrorResponse) => {
+        reject('参数错误')
       })
     })
   }
@@ -155,6 +178,9 @@ export class MeService {
       this.localService.set(UID_KEY, uid)
     }
 
+    const userId = resp.data.user.user.id
+    this.localService.set(USER_ID_KEY,userId)
+
     //清空本地缓存
     this.localService.set(USER_INFO_KEY, {})
 
@@ -179,27 +205,6 @@ export class MeService {
     console.log(this.pInfo)
     this.localService.set(USER_INFO_KEY, this.pInfo)
 
-    // if (type == 3) {
-    //   const api = this.comService.transferUrl('/api/teacher/?tid=' + uid)
-    //   this.http.get(api,this.httpOptions ).subscribe((response: any) => {
-    //     const teainfo: TeacherInfoVo = response.data
-    //     this.convertFromTeaDto(teainfo).then((localData) => {
-    //       this.localService.set(USER_INFO_KEY, localData)
-    //       this.pInfo = localData
-    //     })
-
-    //   })
-    // }
-    // else if (type == 4) {
-    //   const api = this.comService.transferUrl('/api/student/?tid=' + uid)
-    //   this.http.get(api, this.httpOptions).subscribe((response: any) => {
-    //     const stuinfo: StuInfoVo = response.data
-    //     this.convertFromStuDto(stuinfo).then((localData) => {
-    //       this.localService.set(USER_INFO_KEY, localData)
-    //       this.pInfo = localData
-    //     })
-    //   })
-    // }
   }
   getPInfo() {
     if (this.pInfo == null) {
@@ -211,41 +216,6 @@ export class MeService {
     this.pInfo = info
     this.localService.set(USER_INFO_KEY, info)
   }
-
-  // async convertFromStuDto(serveDto: StuInfoVo) {
-  //   let localData: PersonalInfoVo = {}
-  //   //格式转换
-  //   localData.phone = serveDto.st_phone
-  //   localData.name = serveDto.st_name
-  //   localData.gender = serveDto.st_sex
-  //   localData.tid = serveDto.st_id
-  //   localData.schoolCode = serveDto.st_school
-  //   localData.collegeCode = serveDto.st_college
-  //   localData.majorCode = serveDto.st_major
-
-  //   localData.schoolName = <string>await this.getSchoolNameByCode(localData.schoolCode)
-  //   localData.collegeName = <string>await this.getCollegeNameByCode(localData.schoolCode,localData.collegeCode)
-  //   localData.majorName = <string>await this.getMajorNameByCode(localData.schoolCode,localData.collegeCode,localData.majorCode)
-
-  //   return localData
-  // }
-  // async convertFromTeaDto(serveDto: TeacherInfoVo) {
-  //   let localData: PersonalInfoVo = {}
-  //   //格式转换
-  //   localData.phone = serveDto.te_phone
-  //   localData.name = serveDto.te_name
-  //   localData.gender = serveDto.te_sex
-  //   localData.tid = serveDto.te_id
-  //   localData.schoolCode = serveDto.te_school
-  //   localData.collegeCode = serveDto.te_college
-  //   localData.majorCode = serveDto.te_major
-
-  //   localData.schoolName = <string>await this.getSchoolNameByCode(localData.schoolCode)
-  //   localData.collegeName = <string>await this.getCollegeNameByCode(localData.schoolCode,localData.collegeCode)
-  //   localData.majorName = <string>await this.getMajorNameByCode(localData.schoolCode,localData.collegeCode,localData.majorCode)
-
-  //   return localData
-  // }
 
 
   /**
@@ -299,75 +269,7 @@ export class MeService {
     })
 
   }
-  // getDtoAsServer(localDto: PersonalInfoVo) {
-  //   const type = this.localService.get(USER_TYPE_KEY, {})
-  //   if (type == 3) {
-  //     let serverDto: TeacherInfoVo = {}
-  //     serverDto.te_name = localDto.name
-  //     serverDto.te_phone = localDto.phone
-  //     serverDto.te_sex = localDto.gender
-  //     serverDto.te_id = localDto.identity
 
-  //     serverDto.te_college = localDto.collegeCode
-  //     serverDto.te_school = localDto.schoolCode
-  //     serverDto.te_major = localDto.majorCode
-  //     return serverDto
-  //   }
-  //   else if (type == 4) {
-  //     let serverDto: StuInfoVo = {}
-  //     serverDto.st_name = localDto.name
-  //     serverDto.st_phone = localDto.phone
-  //     serverDto.st_sex = localDto.gender
-  //     serverDto.st_id = localDto.identity
-
-  //     serverDto.st_college = localDto.collegeCode
-  //     serverDto.st_school = localDto.schoolCode
-  //     serverDto.st_major = localDto.majorCode
-  //     return serverDto
-  //   }
-  // }
-
-  // getDtoAsLocal() {
-  //   const that = this
-  //   return new Promise(async function (resolve, reject) {
-  //     let localData: PersonalInfoVo = {}
-  //     const type = that.localService.get(USER_TYPE_KEY, {})
-  //     if (type == 3) {
-  //       const serveDto: TeacherInfoVo = that.localService.get(USER_INFO_KEY, {});
-  //       //格式转换
-  //       localData.phone = serveDto.te_phone
-  //       localData.name = serveDto.te_name
-  //       localData.gender = serveDto.te_sex
-  //       localData.identity = serveDto.te_id
-  //       localData.schoolCode = serveDto.te_school
-  //       localData.collegeCode = serveDto.te_college
-  //       localData.majorCode = serveDto.te_major
-
-  //       localData.schoolName = <string>await that.getSchoolNameByCode(localData.schoolCode)
-  //       localData.collegeName = <string>await that.getCollegeNameByCode(localData.collegeCode)
-  //       localData.majorName = <string>await that.getMajorNameByCode(localData.majorCode)
-
-  //     }
-  //     else if (type == 4) {
-  //       const serveDto: StuInfoVo = that.localService.get(USER_INFO_KEY, {});
-  //       //格式转换
-  //       localData.phone = serveDto.st_phone
-  //       localData.name = serveDto.st_name
-  //       localData.gender = serveDto.st_sex
-  //       localData.identity = serveDto.st_id
-  //       localData.schoolCode = serveDto.st_school
-  //       localData.collegeCode = serveDto.st_college
-  //       localData.majorCode = serveDto.st_major
-
-  //       localData.schoolName = <string>await that.getSchoolNameByCode(localData.schoolCode)
-  //       localData.collegeName = <string>await that.getCollegeNameByCode(localData.collegeCode)
-  //       localData.majorName = <string>await that.getMajorNameByCode(localData.majorCode)
-  //       console.log(localData)
-  //     }
-  //     resolve(localData)
-  //   })
-
-  // }
 
   saveSchoolsChoice(choice: any[]) {
     this.schoolsChoice = choice;
@@ -375,4 +277,5 @@ export class MeService {
   getSchoolsChoice() {
     return this.schoolsChoice
   }
+  
 }

@@ -1,5 +1,5 @@
 import { TeacherService } from './../service/teacher.service';
-import { ViewWillEnter } from '@ionic/angular';
+import { ViewWillEnter, ToastController } from '@ionic/angular';
 import { MemberInfo } from './../vo/member-info';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
@@ -17,9 +17,15 @@ export class SigninRecordPage implements OnInit,ViewWillEnter {
     const that = this
     this.teaService.getCheckResult().then((resp:any)=>{
       that.stuCheckList = resp
-    }).catch((err)=>{
+    }).catch(async (err)=>{
       if(err == 0){
         console.log('请先发起签到')
+        const toast = await that.toastCtl.create({
+          duration: 1000,
+          position: 'top'
+        });
+        toast.message = '请先发起签到'
+        toast.present()
       }
     })
   }
@@ -28,7 +34,7 @@ export class SigninRecordPage implements OnInit,ViewWillEnter {
   // lateList: MemberInfo[] = []
   // normalList: MemberInfo[] = [  ]
 
-  constructor(private teaService: TeacherService) {
+  constructor(private teaService: TeacherService,private toastCtl:ToastController) {
 
   }
 

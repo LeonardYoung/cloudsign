@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { Component } from '@angular/core';
 
 @Component({
@@ -8,6 +9,10 @@ import { Component } from '@angular/core';
 export class TabsPage {
 
   // private auth:number = 0;
-  constructor() {}
+  constructor(private route: Router) {}
+
+  onClickMe(){
+    this.route.navigateByUrl('/tabs/me')
+  }
 
 }

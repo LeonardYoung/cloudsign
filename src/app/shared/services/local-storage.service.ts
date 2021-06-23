@@ -4,6 +4,7 @@ export const UID_KEY='UID'
 export const USER_TYPE_KEY='Usertype'
 export const USER_INFO_KEY='Userinfo'
 export const TOKEN_KEY='Token'
+export const USER_ID_KEY='UserId'
 
 
 @Injectable({
