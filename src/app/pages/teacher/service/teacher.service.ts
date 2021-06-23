@@ -260,7 +260,7 @@ export class TeacherService {
     const that = this;
     let task:TaskDTO = {
       course_cid: this.curCid,
-      type: '1',
+      type: '2',
       password,
       time_limit
     }

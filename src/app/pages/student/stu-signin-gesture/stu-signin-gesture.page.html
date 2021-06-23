@@ -8,16 +8,26 @@
 </ion-header>
 
 <ion-content color="light">
+  
   <ion-list>
     <ion-item>
-      <ion-label>开始时间</ion-label>
-      <ion-label>Label</ion-label>
+      <ion-row>
+        <ion-col size="6">开始时间</ion-col>
+        <ion-col size="6">{{startString}}</ion-col>
+      </ion-row>
     </ion-item>
-
     <ion-item>
-      <ion-label>结束时间</ion-label>
-      <ion-label>Label</ion-label>
+      <ion-row>
+        <ion-col size="6">结束时间</ion-col>
+        <ion-col size="6">{{endString}}</ion-col>
+      </ion-row>
     </ion-item>
   </ion-list>
+
+  <div class="div1">
+    <div id='patternHolder' class="div2"></div>
+  </div>
+
+  
 
 </ion-content>

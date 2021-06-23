@@ -4,7 +4,6 @@ import { ActivatedRoute } from '@angular/router';
 import { StudentService } from '../service/student.service';
 import * as dayjs from 'dayjs'
 
-
 @Component({
   selector: 'app-stu-signin-one-key',
   templateUrl: './stu-signin-one-key.page.html',
@@ -16,6 +15,8 @@ export class StuSigninOneKeyPage implements OnInit,ViewWillEnter {
   // taskId: string = ''
   startString = ''
   endString = ''
+  
+
   constructor(private activeRouter: ActivatedRoute,private stuServer:StudentService,
     private toastCtl:ToastController,
     private navCtl:NavController) {
@@ -33,6 +34,7 @@ export class StuSigninOneKeyPage implements OnInit,ViewWillEnter {
   }
 
   ngOnInit() {
+    
     
   }
   async onClickSignin() {
