@@ -148,6 +148,7 @@ export class PassportServiceService {
       axios.post(api, params)
         .then(async function (response:any) {
           if(response.data.code == 2001){
+            console.log(response.data.code)
             if(response.data.data.user.userRole.id == 3 || response.data.data.user.userRole.id == 4){
               //保存token
               that.localStorage.set(TOKEN_KEY,response.data.data.token)

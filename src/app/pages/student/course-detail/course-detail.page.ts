@@ -50,5 +50,19 @@ export class CourseDetailPage implements OnInit {
       toast.present()
     })
   }
+  onClickQuit(){
+    // const that = this
+    // console.log(that.course);
+    // this.stuServer.unjoinCourse(that.course.cid).then(()=>{
+    //   for(let i = 0;i < this.courseList.length;++i){
+    //     if(this.courseList[i].cid == course.cid){
+    //       this.courseList.splice(i,1)
+    //       break
+    //     }
+    //   }
+    // }).catch((err)=>{
+    //   console.log('失败')
+    // })
+  }
 
 }

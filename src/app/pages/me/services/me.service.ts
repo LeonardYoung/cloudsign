@@ -178,7 +178,7 @@ export class MeService {
       this.localService.set(UID_KEY, uid)
     }
 
-    const userId = resp.data.user.user.id
+    const userId = resp.data.user.userAuth.id
     this.localService.set(USER_ID_KEY,userId)
 
     //清空本地缓存
