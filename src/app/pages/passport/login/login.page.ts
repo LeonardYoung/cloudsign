@@ -51,7 +51,7 @@ export class LoginPage implements OnInit {
    */
   async getCheckImg(){
     const toast = await this.toastCtl.create({
-      duration: 1500,
+      duration: 1000,
       position: 'top'
     });
     
@@ -93,7 +93,7 @@ export class LoginPage implements OnInit {
   async getCode() {
     // 1.校验
     const toast = await this.toastCtl.create({
-      duration: 1500,
+      duration: 1000,
       position: 'top'
     });
 
@@ -154,7 +154,7 @@ export class LoginPage implements OnInit {
   async onLogin() {
     const toast = await this.toastCtl.create({
       message: '',
-      duration: 1500,
+      duration: 1000,
       position: 'top'
     });
 

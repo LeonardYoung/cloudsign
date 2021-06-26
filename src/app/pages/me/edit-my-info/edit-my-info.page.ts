@@ -65,7 +65,7 @@ export class EditMyInfoPage implements OnInit ,AfterViewInit{
   
   async onClickFinish(){
     const toast = await this.toastCtl.create({
-      duration: 1500,
+      duration: 1000,
       position: 'top'
     });
     const that = this

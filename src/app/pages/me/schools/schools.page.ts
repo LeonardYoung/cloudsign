@@ -64,7 +64,7 @@ export class SchoolsPage implements OnInit {
 
     this.toast = await this.toastCtl.create({
       message: '',
-      duration: 1500,
+      duration: 1000,
       position: 'top'
     });
 

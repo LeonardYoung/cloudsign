@@ -90,7 +90,7 @@ export class StuCourseListPage implements OnInit,ViewWillEnter {
    async onClickSignin(course: CourseInfo){
     console.log(course);
     const toast = await this.toastCtl.create({
-      duration: 1500,
+      duration: 1000,
       position: 'top'
     });
     this.stuServer.getCheckTasks(course.cid).then((resp:any)=>{

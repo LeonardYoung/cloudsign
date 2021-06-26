@@ -39,7 +39,7 @@ export class StuSigninOneKeyPage implements OnInit,ViewWillEnter {
   }
   async onClickSignin() {
     const toast = await this.toastCtl.create({
-      duration: 1500,
+      duration: 1000,
       position: 'top'
     });
     this.stuServer.CheckIn(this.cid).then(()=>{

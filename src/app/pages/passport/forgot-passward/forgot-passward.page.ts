@@ -58,7 +58,7 @@ export class ForgotPasswardPage implements OnInit {
   }
   async onConfirm(){
     const toast = await this.toastCtl.create({
-      duration: 1500,
+      duration: 1000,
       position: 'top'
     });
     
@@ -80,7 +80,7 @@ export class ForgotPasswardPage implements OnInit {
   async getCode() {
     // 1.校验
     const toast = await this.toastCtl.create({
-      duration: 1500,
+      duration: 1000,
       position: 'top'
     });
 

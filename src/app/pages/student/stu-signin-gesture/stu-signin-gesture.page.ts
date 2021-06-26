@@ -28,7 +28,7 @@ export class StuSigninGesturePage implements OnInit,ViewWillEnter {
         //do something with pattern
         that.sign_in_number = lock.getPattern();
         const toast = await that.toastCtl.create({
-          duration: 1500,
+          duration: 1000,
           position: 'top'
         });
 

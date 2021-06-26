@@ -188,4 +188,34 @@ export class StudentService {
       })
     })
   }
+  /**
+   *学生手势签到
+   *
+   * @param {string} cid
+   * @return {*} 
+   * @memberof StudentService
+   */
+   CheckInGesture(cid:string){
+    const api = this.comService.transferUrl('/check')
+    const pinfo = this.localService.get(USER_INFO_KEY,{})
+
+    const that = this;
+    const params = {
+      classId : cid,
+      sid: pinfo.sid
+    }
+    return new Promise<void>(function (resolve, reject) {
+      that.http.post(api, params ).subscribe((response: any) => {
+        if (response.code == 2007) {
+          resolve(response.data)
+        }
+        else {
+          reject(response.error)
+        }
+
+      }, (error: HttpErrorResponse) => {
+        reject('参数错误')
+      })
+    })
+  }
 }

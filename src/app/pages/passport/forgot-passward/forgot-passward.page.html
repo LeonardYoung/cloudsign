@@ -61,7 +61,7 @@
           <ion-item >
             <ion-label position="fixed">输入密码</ion-label>
             <ion-input name="password" type="password" placeholder="请输入6-16位密码" #pwd="ngModel"
-            required pattern="^(?=.*[a-z])(?=.*\d)[^]{6,16}$" [(ngModel)]="password"></ion-input>
+            required pattern="^(?=.*\d)[^]{6,16}$" [(ngModel)]="password"></ion-input>
           </ion-item>
           <ion-text class="ion-text-left" color="danger" *ngIf="pwd.invalid && pwd.touched">
             <p [hidden]="!pwd.errors?.required" class="ion-padding-start">请输入密码</p>

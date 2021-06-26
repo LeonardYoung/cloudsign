@@ -49,7 +49,7 @@ export class JoinCoursePage implements OnInit {
    */
   async onClickQrCode() {
     const toast = await this.toastCtl.create({
-      duration: 1500,
+      duration: 1000,
       position: 'top'
     });
     const that =this
@@ -78,7 +78,7 @@ export class JoinCoursePage implements OnInit {
    */
   async onClickConfirm(){
     const toast = await this.toastCtl.create({
-      duration: 1500,
+      duration: 1000,
       position: 'top'
     });
     const that =this

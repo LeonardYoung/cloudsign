@@ -67,7 +67,7 @@ export class SignupPage implements OnInit {
   async getCode() {
     // 1.校验
     const toast = await this.toastctl.create({
-      duration: 1500,
+      duration: 1000,
       position: 'top'
     });
 
