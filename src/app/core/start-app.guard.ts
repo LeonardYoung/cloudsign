@@ -16,7 +16,7 @@ export class StartAppGuard implements CanActivate {
       const appConfig: any = this.LocalStorage.get(APP_KEY, {
         version: '1.5.2',
         mobile: '18850566407',
-        launched: false
+        launched: true
       });
       if (appConfig.launched === false ){
         appConfig.launched = true;

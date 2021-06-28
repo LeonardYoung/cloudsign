@@ -1,3 +1,4 @@
+import { SchoolsPage } from './schools/schools.page';
 import { AboutUsPage } from './about-us/about-us.page';
 import { EditMyInfoPage } from './edit-my-info/edit-my-info.page';
 import { AlterPasswardPage } from './alter-passward/alter-passward.page';
@@ -25,6 +26,10 @@ const routes: Routes = [
   {
     path: 'about',
     component: AboutUsPage
+  },
+  {
+    path: 'schools',
+    component: SchoolsPage
   },
 ];
 

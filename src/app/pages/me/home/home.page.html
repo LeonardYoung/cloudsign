@@ -9,14 +9,18 @@
   <ion-list>
     <ion-item>
       <ion-thumbnail slot="start">
-        <img src="assets/img/c_goodspicture.png"  />
+        <img src="assets/img/tou.png"  />
       </ion-thumbnail>
       <ion-label>
         <ion-text>
-          <h1>张三</h1>
+          <ng-container *ngIf="userInfo != null">
+            <h1 *ngIf="userInfo.name==null">请先修改个人信息</h1>
+            <h1 *ngIf="userInfo.name!=null">{{userInfo.name}}</h1>
+          </ng-container>
         </ion-text>
         <ion-text >
-          <p>200327100</p>
+          <p *ngIf="userInfo.identity == null">&nbsp;</p>
+          <p >{{userInfo.identity}}</p>
         </ion-text>
       </ion-label>
     </ion-item>
@@ -25,31 +29,32 @@
     <div class="blank"></div>
 
     <ion-item detail lines="none" href="/tabs/me/edit">
-      <ion-icon slot="start" name="add"></ion-icon>
+      <ion-icon slot="start" name="home"></ion-icon>
       <ion-label>修改个人信息</ion-label>
     </ion-item>
     <div class="blank"></div>
 
     <ion-item detail lines="none" href="/tabs/me/alter-passward">
-      <ion-icon slot="start" name="add"></ion-icon>
+      <ion-icon slot="start" name="key"></ion-icon>
       <ion-label>修改密码</ion-label>
     </ion-item>
     <div class="blank"></div>
 
     <ion-item detail lines="none" href="/tabs/me/about">
-      <ion-icon slot="start" name="add"></ion-icon>
+      <ion-icon slot="start" name="people"></ion-icon>
       <ion-label>关于我们</ion-label>
     </ion-item>
     <div class="blank"></div>
 
-    <ion-item detail lines="none">
-      <ion-icon slot="start" name="add"></ion-icon>
-      <ion-label>版本号</ion-label>
+    <ion-item lines="none">
+      <ion-icon slot="start" name="arrow-up"></ion-icon>
+      <ion-label>版本号 </ion-label>
+      <ion-note>V1.1.2</ion-note>
     </ion-item>
     <div class="blank"></div>
 
-    <ion-item detail lines="none">
-      <ion-icon slot="start" name="add"></ion-icon>
+    <ion-item detail lines="none" href='/passport/login'>
+      <ion-icon slot="start" name="log-out"></ion-icon>
       <ion-label>安全退出</ion-label>
     </ion-item>
 

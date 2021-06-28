@@ -1,0 +1,1 @@
+export const serveUrl = 'http://api.myard.cn:8888'

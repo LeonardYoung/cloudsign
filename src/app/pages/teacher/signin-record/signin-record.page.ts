@@ -1,3 +1,5 @@
+import { TeacherService } from './../service/teacher.service';
+import { ViewWillEnter, ToastController } from '@ionic/angular';
 import { MemberInfo } from './../vo/member-info';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
@@ -8,89 +10,32 @@ import { CourseInfo } from '../vo/course-info';
   templateUrl: './signin-record.page.html',
   styleUrls: ['./signin-record.page.scss'],
 })
-export class SigninRecordPage implements OnInit {
+export class SigninRecordPage implements OnInit,ViewWillEnter {
 
-  courseInfo: CourseInfo = {
-    courseName: '',
-    courseCode: null,
-    classRoom: '',
-    startTime: '',
-    endTime: '',
-  };
+  courseInfo: CourseInfo = {};
+  ionViewWillEnter(){
+    const that = this
+    this.teaService.getCheckResult().then((resp:any)=>{
+      that.stuCheckList = resp
+    }).catch(async (err)=>{
+      if(err == 0){
+        console.log('请先发起签到')
+        const toast = await that.toastCtl.create({
+          duration: 1000,
+          position: 'top'
+        });
+        toast.message = '请先发起签到'
+        toast.present()
+      }
+    })
+  }
 
-  absenceList: MemberInfo[] = [
-    {
-      name: '学生1',
-      No: '200327100',
-      gender: 'boy',
-      school: '福州大学',
-      depart: '数计学院',
-      totalExp: 400,
-      actualExp: 300,
-      level: '优秀'
-    },
-    {
-      name: '学生2',
-      No: '200327100',
-      gender: 'boy',
-      school: '福州大学',
-      depart: '数计学院',
-      totalExp: 400,
-      actualExp: 300,
-      level: '优秀'
-    },
-  ]
-  lateList: MemberInfo[] = [
-    {
-      name: '学生1',
-      No: '200327100',
-      gender: 'boy',
-      school: '福州大学',
-      depart: '数计学院',
-      totalExp: 400,
-      actualExp: 300,
-      level: '优秀'
-    },
-    {
-      name: '学生2',
-      No: '200327100',
-      gender: 'boy',
-      school: '福州大学',
-      depart: '数计学院',
-      totalExp: 400,
-      actualExp: 300,
-      level: '优秀'
-    },
-  ]
-  normalList: MemberInfo[] = [
-    {
-      name: '学生1',
-      No: '200327100',
-      gender: 'boy',
-      school: '福州大学',
-      depart: '数计学院',
-      totalExp: 400,
-      actualExp: 300,
-      level: '优秀'
-    },
-    {
-      name: '学生2',
-      No: '200327100',
-      gender: 'boy',
-      school: '福州大学',
-      depart: '数计学院',
-      totalExp: 400,
-      actualExp: 300,
-      level: '优秀'
-    },
-  ]
+  stuCheckList: any[] = []
+  // lateList: MemberInfo[] = []
+  // normalList: MemberInfo[] = [  ]
 
-  constructor(private activeRouter: ActivatedRoute) {
-    this.activeRouter.queryParams.subscribe(queryParsm => {
-      this.courseInfo.courseName = queryParsm.name
-      // this.id = parseInt(quertParsm.id);
-      // this.category = this.categoryService.get(this.id);
-    });
+  constructor(private teaService: TeacherService,private toastCtl:ToastController) {
+
   }
 
   ngOnInit() {

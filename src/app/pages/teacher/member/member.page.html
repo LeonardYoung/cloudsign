@@ -16,7 +16,7 @@
 
     <ion-item>
       <ion-label>学号</ion-label>
-      <ion-note>{{member.No}}</ion-note>
+      <ion-note>{{member.sid}}</ion-note>
     </ion-item>
 
     <ion-item>
@@ -26,33 +26,38 @@
 
     <ion-item>
       <ion-label>学校</ion-label>
-      <ion-note>{{member.school}}</ion-note>
+      <ion-note>{{member.school_name}}</ion-note>
     </ion-item>
 
     <ion-item>
       <ion-label>院系</ion-label>
-      <ion-note>{{member.depart}}</ion-note>
+      <ion-note>{{member.college_name}}</ion-note>
     </ion-item>
 
     <ion-item>
-      <ion-label>总经验值</ion-label>
-      <ion-note>{{member.totalExp}}</ion-note>
+      <ion-label>专业</ion-label>
+      <ion-note>{{member.major_name}}</ion-note>
     </ion-item>
 
     <ion-item>
-      <ion-label>实际经验值</ion-label>
-      <ion-note>{{member.actualExp}}</ion-note>
+      <ion-label>得分</ion-label>
+      <ion-note>{{member.score}}</ion-note>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>总签到</ion-label>
+      <ion-note>{{member.totalcheck}}</ion-note>
     </ion-item>
 
 
     <ion-item>
-      <ion-label>出勤等级</ion-label>
-      <ion-note>{{member.level}}</ion-note>
+      <ion-label>实际签到</ion-label>
+      <ion-note>{{member.hascheck}}</ion-note>
     </ion-item>
 
 
   </ion-list>
-  <ion-button class="mid-btn" href="/tabs/teacher/signin-detail" expand="block" fill="solid" >
+  <ion-button class="mid-btn" (click)="onClickDetail()" expand="block" fill="solid" >
     查看签到明细
   </ion-button>
 

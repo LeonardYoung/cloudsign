@@ -4,37 +4,113 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content  color="light">
+<ion-content >
   <div padding-horizontal>
-    <form #loginForm="ngForm">   
-      <ion-list padding-right no-margin>
-        <ion-item lines="none"></ion-item>
-
-        <ion-item lines="full">
-          <ion-label position="fixed">账号</ion-label>
-          <ion-input name="username" type="text" placeholder="请输入账号" [(ngModel)]="username"></ion-input>
-        </ion-item>
-        <ion-item  lines="full">
-          <ion-label position="fixed">密码</ion-label>
-          <ion-input name="password" type="password" placeholder="请输入密码" [(ngModel)]="password"></ion-input>
-        </ion-item>
-
-        <ion-item lines="none">
-          <ion-button slot="end" fill="clear" size="small" href="/passport/forgot-passward" >忘记密码？</ion-button>
-        </ion-item>
-      </ion-list>
-      <ion-grid>
-
-        <ion-row>
-          <ion-col>
-            <ion-button expand="full" color="primary" (click)="onLogin()">登录</ion-button>
-          </ion-col>
-          <ion-col>
-            <ion-button expand="full" color="primary"  href="/passport/signup">注册</ion-button>
-          </ion-col>
-        </ion-row>
+    <ion-slides #loginSlides>
+      <ion-slide>
         
-      </ion-grid>
-    </form>
+        <form #userNameLoginForm="ngForm">
+          <ion-list padding-right no-margin>
+
+            <!-- <ion-item lines="none"></ion-item> -->
+            <p class="title">密码登录</p>
+            <ion-item lines="full" >
+              <ion-label position="fixed">账号</ion-label>
+              <ion-input  name="username" type="text" required #usernameChech="ngModel"
+              placeholder="请输入账号" [(ngModel)]="loginTable.username"></ion-input>
+            </ion-item>
+            <!-- <ion-text class="ion-text-left" color="danger" *ngIf="usernameChech.invalid && usernameChech.touched">
+              <p [hidden]="!usernameChech.errors?.required" class="ion-padding-start">请输入账号</p>
+            </ion-text> -->
+
+  
+            <ion-item lines="full">
+              <ion-label position="fixed">密码</ion-label>
+              <ion-input name="password" type="password" required #pwdCheck="ngModel"
+              placeholder="请输入密码" [(ngModel)]="loginTable.password"></ion-input>
+            </ion-item>
+            <!-- <ion-text class="ion-text-left" color="danger" *ngIf="pwdCheck.invalid && pwdCheck.touched">
+              <p [hidden]="!pwdCheck.errors?.required" class="ion-padding-start">请输入密码</p>
+            </ion-text> -->
+
+            <ion-item lines="full">
+              <ion-label position="fixed">图形验证码</ion-label>
+              <ion-input name="pic" type="number" required #pwdCheck="ngModel"
+              placeholder="请输入数值" [(ngModel)]="loginTable.picCode"></ion-input>
+              <ion-img [src]="checkImg" (click)="onClickImg()"></ion-img>
+            </ion-item>
+
+
+
+            <ion-item lines="none">
+              <ion-button slot="start" fill="clear" size="small" (click)="onClickSmsLogin()">验证码登录</ion-button>
+              <ion-button slot="end" fill="clear" size="small" href="/passport/forgot-passward">忘记密码？</ion-button>
+            </ion-item>
+          </ion-list>
+        </form>
+      </ion-slide>
+
+      <ion-slide>
+        <form #phoneLoginForm="ngForm">
+          <ion-list padding-right no-margin>
+
+            <p class="title">验证码登录</p>
+            <ion-item lines="full">
+              <ion-label position="fixed">手机号</ion-label>
+              <ion-input name="phone" type="number" placeholder="请输入手机号" required #phoneCheck="ngModel"
+              pattern="^((13[0-9])|(14[5|7])|(15([0-3]|[5-9]))|(18[0,3,5-9]))\d{8}$"
+              [(ngModel)]="loginTable.phone"></ion-input>
+            </ion-item>
+            <!-- <ion-text class="ion-text-left" color="danger" *ngIf="phoneCheck.invalid && phoneCheck.touched">
+              <p [hidden]="!phoneCheck.errors?.required" class="ion-padding-start">请输入手机号</p>
+              <p [hidden]="!phoneCheck.errors?.pattern" class="ion-padding-start">手机号码格式错误</p>
+            </ion-text>
+   -->
+
+            <ion-item lines="full">
+              <ion-label position="fixed">验证码</ion-label>
+              <ion-input name="code" type="number" placeholder="请输入验证码" required #codeCheck="ngModel"
+              pattern="[0-9]{4,}"
+              [(ngModel)]="loginTable.code"></ion-input>
+              <ion-button (click)="getCode()" expand="block" fill="clear" shape="round"
+              [disabled]="codeCmpt.btnDisable">
+              {{codeCmpt.text}}
+              </ion-button>
+              <!-- <ion-button color="primary" expand="full" slot="end" (click)="onSendSMS()" 
+            [disabled]="getCode.btnDisable">{{getCode.text}}</ion-button> -->
+            </ion-item>
+            <!-- <ion-text class="ion-text-left" color="danger" *ngIf="codeCheck.invalid && codeCheck.touched">
+              <p [hidden]="!codeCheck.errors?.required" class="ion-padding-start">请输入验证码</p>
+              <p [hidden]="!codeCheck.errors?.pattern" class="ion-padding-start">验证码格式错误</p>
+            </ion-text> -->
+            <ion-item lines="full">
+              <ion-label position="fixed">图形验证码</ion-label>
+              <ion-input name="pic" type="number" required #pwdCheck="ngModel"
+              placeholder="请输入数值" [(ngModel)]="loginTable.picCode"></ion-input>
+              <ion-img [src]="checkImg" (click)="onClickImg()"></ion-img>
+            </ion-item>
+
+            <ion-item lines="none">
+              <ion-button slot="start" fill="clear" size="small" (click)="onClickPwdLogin()">密码登录</ion-button>
+            </ion-item>
+          </ion-list>
+
+        </form>
+      </ion-slide>
+    </ion-slides>
+    <ion-grid>
+
+      <ion-row>
+        <ion-col>
+          <ion-button expand="full" color="primary" (click)="onLogin()"  shape="round"
+          [disabled]="(loginType == 'pwd' && userNameLoginForm.invalid) || (loginType == 'code' && phoneLoginForm.invalid)"
+          >登录</ion-button>
+        </ion-col>
+        <ion-col>
+          <ion-button expand="full" color="primary"  shape="round" href="/passport/signup">注册</ion-button>
+        </ion-col>
+      </ion-row>
+
+    </ion-grid>
   </div>
 </ion-content>

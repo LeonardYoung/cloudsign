@@ -1,3 +1,5 @@
+import { TeacherService } from './../service/teacher.service';
+import { ViewWillEnter, NavController } from '@ionic/angular';
 import { ActivatedRoute } from '@angular/router';
 import { MemberInfo } from './../vo/member-info';
 import { Component, OnInit } from '@angular/core';
@@ -7,37 +9,34 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './member.page.html',
   styleUrls: ['./member.page.scss'],
 })
-export class MemberPage implements OnInit {
+export class MemberPage implements OnInit,ViewWillEnter {
 
   member: MemberInfo = {
-    name: '',
-    No: '',
-    gender: '',
-    school: '',
-    depart: '',
-    totalExp: null,
-    actualExp: null,
-    level: '',
+    name:''
   }
-  constructor(private activateRoute: ActivatedRoute) {
+
+  constructor(private activateRoute: ActivatedRoute, 
+    private teaService:TeacherService,
+    private navCtl:NavController) {
+    const that = this
     this.activateRoute.queryParams.subscribe(queryParsm => {
-      this.member.No = queryParsm.No
+      this.member.sid = queryParsm.sid
 
       // 测试数据
-      this.member = {
-        name: '学生666',
-        No: '111',
-        gender: 'boy',
-        school: '福州大学',
-        depart: '数计学院',
-        totalExp: 400,
-        actualExp: 300,
-        level: '优秀'
-      }
+      this.teaService.getMemberBySid(queryParsm.sid).then((resp)=>{
+        that.member = resp
+        console.log(that.member)
+      })
     });
+  }
+  ionViewWillEnter(){
+    
   }
 
   ngOnInit() {
+  }
+  onClickDetail(){
+    this.navCtl.navigateForward("/tabs/teacher/signin-detail")
   }
 
 

@@ -1,13 +1,21 @@
 export interface PersonalInfoVo{
-    phone: string, //手机号
-    identity: string,//学生、老师
-    userNo: string, //学号、工号
-    userName: string,
 
+    id?: string,
+    gmt_create ?: string,
+    gmt_modified ?: string,
+    user_id ?: string,
 
-    gender: string,
-    school: string,
-    major: string,
-    classNo: string
+    phone ?: string, //手机号
+    tid ?: string,//学号
+    sid ?: string,//学号
+    name ?: string,
+    gender ?: string,
+
+    schoolCode ?: string,
+    schoolName ?: string,
+    majorCode ?: string,
+    majorName ?: string,
+    collegeCode ?: string
+    collegeName ?: string
 
 }

@@ -9,6 +9,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { StudentRoutingModule } from './student-routing.module';
+import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
 
 
 @NgModule({
@@ -23,6 +24,9 @@ import { StudentRoutingModule } from './student-routing.module';
     CommonModule,
     StudentRoutingModule,
     SharedModule,
-  ]
+  ],
+  providers: [
+    BarcodeScanner,
+  ],
 })
 export class StudentModule { }

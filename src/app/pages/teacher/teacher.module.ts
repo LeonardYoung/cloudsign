@@ -12,7 +12,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { TeacherRoutingModule } from './teacher-routing.module';
-
+import { QRCodeModule } from 'angularx-qrcode';
 
 @NgModule({
   imports: [
@@ -20,7 +20,8 @@ import { TeacherRoutingModule } from './teacher-routing.module';
     TeacherRoutingModule,
     SharedModule,
     FormsModule,
-    IonicModule
+    IonicModule,
+    QRCodeModule
   ],
   declarations: [
     CourseListPage,

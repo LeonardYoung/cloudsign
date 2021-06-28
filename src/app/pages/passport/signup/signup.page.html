@@ -7,79 +7,137 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content color="light">
-  <form #signupForm="ngForm">
+<ion-content>
 
-    <ion-slides #signupSlides style="width: 100%;">
-      <ion-slide>
+  <ion-slides #signupSlides>
+    <ion-slide>
+      <form #phoneCodeForm="ngForm">
+
         <ion-list>
           <ion-item lines="none">
-          </ion-item>
-          <ion-item>
-            <ion-label position="fixed">手机号</ion-label>
-            <ion-input name="phone" type="number" placeholder="请输入手机号"
-            required pattern="^((13[0-9])|(14[5|7])|(15([0-3]|[5-9]))|(18[0,3,5-9]))\d{8}$"
-            [(ngModel)]="signup.phone"></ion-input>
           </ion-item>
           <ion-item lines="full">
+            <ion-label position="fixed">手机号</ion-label>
+            <ion-input name="phone" type="number" placeholder="请输入手机号" required
+              pattern="^((13[0-9])|(14[5|7])|(15([0-3]|[5-9]))|(18[0,3,5-9]))\d{8}$" [(ngModel)]="signup.phone"
+              #phone="ngModel"></ion-input>
+          </ion-item>
+          <ion-text class="ion-text-left" color="danger" *ngIf="phone.invalid && phone.touched">
+            <p [hidden]="!phone.errors?.required" class="ion-padding-start">请输入手机号码</p>
+            <p [hidden]="!phone.errors?.pattern" class="ion-padding-start">请输入正确的手机号码 </p>
+          </ion-text>
+
+
+          <ion-item lines="full">
             <ion-label position="fixed">验证码</ion-label>
-            <ion-input name="code" type="number" placeholder="请输入验证码" [(ngModel)]="code"></ion-input>
-            <ion-button (click)="getCode()" expand="block" fill="clear" shape="round">
+            <ion-input name="code" type="number" placeholder="请输入验证码" required pattern="[0-9]{4,}" #checkcode="ngModel"
+              [(ngModel)]="signup.smsCode"></ion-input>
+            <!-- <ion-button (click)="getCode()" expand="block" fill="clear" shape="round">
               获取验证码
+            </ion-button> -->
+            <ion-button (click)="getCode()" expand="block" fill="clear" shape="round" [disabled]="codeCmpt.btnDisable">
+              {{codeCmpt.text}}
             </ion-button>
           </ion-item>
+          <ion-text class="ion-text-left" color="danger" *ngIf="checkcode.invalid && checkcode.touched">
+            <p [hidden]="!checkcode.errors?.required" class="ion-padding-start">请输入验证码</p>
+            <p [hidden]="!checkcode.errors?.pattern" class="ion-padding-start">请输入4位验证码 </p>
+          </ion-text>
+
+
           <ion-item lines="none">
           </ion-item>
-          <ion-button (click)="onNext()" expand="block">
-            下一步
-          </ion-button>
+          <ion-grid fixed>
+            <ion-row>
+              <ion-col size="12">
+                <ion-button [disabled]="phoneCodeForm.invalid" (click)="onNext()" expand="block" shape="round">
+                  下一步
+                </ion-button>
+              </ion-col>
+              <!-- <ion-col size="6">
+                <ion-button [disabled]="phoneCodeForm.invalid" (click)="onFastSignup()" expand="block" shape="round">
+                  快速注册
+                </ion-button>
+              </ion-col> -->
+            </ion-row>
+          </ion-grid>
+
+
         </ion-list>
-      </ion-slide>
-  
-      <ion-slide>
-        <ion-list>
+      </form>
+    </ion-slide>
+
+    <ion-slide>
+      <form #courseForm="ngForm" style="width: 100%;">
+        <ion-list style="width: 100%;">
           <ion-item lines="none">
           </ion-item>
           <ion-item lines="full">
             <ion-label>身份</ion-label>
-            <ion-select name="identity" [(ngModel)]="signup.identity" value='student' interface="action-sheet">
-              <ion-select-option value='teacher'>教师</ion-select-option>
-              <ion-select-option value='student'>学生</ion-select-option>
+            <ion-select name="identity" [(ngModel)]="signup.type" interface="action-sheet">
+              <ion-select-option value='3'>教师</ion-select-option>
+              <ion-select-option value='4'>学生</ion-select-option>
             </ion-select>
           </ion-item>
-    
+
           <ion-item lines="full">
-            <ion-label position="fixed">姓名</ion-label>
-            <ion-input name="userName" type="text" placeholder="请输入姓名" [(ngModel)]="signup.userName"></ion-input>
+            <ion-label position="fixed">用户名</ion-label>
+            <ion-input name="userName" type="text" placeholder="请输入用户名" required #userName="ngModel"
+              [(ngModel)]="signup.username"></ion-input>
           </ion-item>
-          
+          <ion-text class="ion-text-left" color="danger" *ngIf="userName.invalid && userName.touched">
+            <p [hidden]="!userName.errors?.required" class="ion-padding-start">请输入用户名</p>
+          </ion-text>
+
           <ion-item lines="full">
             <ion-label position="fixed">工号</ion-label>
-            <ion-input name="userNo" type="password" placeholder="请输入教工号/学号" [(ngModel)]="signup.userNo"></ion-input>
+            <ion-input name="userNo" type="number" placeholder="请输入教工号/学号" required #userNumber="ngModel"
+              [(ngModel)]="signup.idNumber"></ion-input>
           </ion-item>
+          <ion-text class="ion-text-left" color="danger" *ngIf="userNumber.invalid && userNumber.touched">
+            <p [hidden]="!userNumber.errors?.required" class="ion-padding-start">请输入教工号/学号</p>
+          </ion-text>
+
+
           <ion-item lines="full">
             <ion-label position="fixed">输入密码</ion-label>
-            <ion-input name="password" type="password" placeholder="请输入8-16位密码" [(ngModel)]="signup.password"></ion-input>
-          </ion-item>
-          <ion-item lines="full">
-            <ion-label position="fixed">确认密码</ion-label>
-            <ion-input name="confirmPassword" type="password" placeholder="请输入确认密码" [(ngModel)]="confirmPassword">
+            <ion-input name="password" type="password" placeholder="请输入6-16位密码" required
+              pattern="^(?=.*\d)[^]{6,16}$" #passwordCheck="ngModel" [(ngModel)]="signup.password">
             </ion-input>
           </ion-item>
+          <ion-text class="ion-text-left" color="danger" *ngIf="passwordCheck.invalid && passwordCheck.touched">
+            <p [hidden]="!passwordCheck.errors?.required" class="ion-padding-start">请输入密码</p>
+            <p [hidden]="!passwordCheck.errors?.pattern" class="ion-padding-start">密码格式不正确</p>
+          </ion-text>
+
+
+          <ion-item lines="full">
+            <ion-label position="fixed">确认密码</ion-label>
+            <ion-input name="confirmPassword" type="password" placeholder="请输入确认密码" required
+              [ysjConfirm]="signup.password" #confirmPwd="ngModel" [(ngModel)]="confirmPassword">
+            </ion-input>
+          </ion-item>
+          <ion-text class="ion-text-left" color="danger" *ngIf="confirmPwd.invalid && confirmPwd.touched">
+            <p [hidden]="!confirmPwd.errors?.required" class="ion-padding-start">请输入确认密码</p>
+            <p [hidden]="!confirmPwd.errors?.confirm" class="ion-padding-start">两次密码不一致</p>
+          </ion-text>
+
+
           <ion-item lines="none">
           </ion-item>
-    
-          <ion-button type="submit" (click)="onSubmit()" expand="block">
+
+          <ion-button class="full-btn" [disabled]="courseForm.invalid" type="submit" (click)="onSubmit()" expand="block"
+            shape="round">
             注册
           </ion-button>
         </ion-list>
-      </ion-slide>
-      <ion-slide>
-        <h1>注册完成</h1>
-      </ion-slide>
-    </ion-slides>
+      </form>
+    </ion-slide>
+    <ion-slide>
+      <h1>注册完成</h1>
+    </ion-slide>
+  </ion-slides>
 
-    
 
-  </form>
+
 </ion-content>

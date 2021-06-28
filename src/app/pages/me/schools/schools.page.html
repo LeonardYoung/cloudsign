@@ -1,0 +1,78 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>{{titles[curSlideIndex]}}</ion-title>
+    <ion-buttons slot="start">
+      <ion-button (click)="onClickBack()" expand="block" fill="clear" shape="round">
+        <ion-icon name="chevron-back-outline"></ion-icon>
+        返回
+      </ion-button>
+      <!-- <ion-back-button defaultHref='/tabs/me/schools' (click)="onClickBack()" text='返回'></ion-back-button> -->
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-slides #schoolSlides>
+    <ion-slide style="width: 100%;">
+
+
+      <ion-grid fixed>
+        <ion-row>
+          <ion-list>
+            <ion-item *ngFor="let school of schoolList" (click)="onClickSchool(school)">
+              <ion-label>{{school.schName}}</ion-label>
+            </ion-item>
+          </ion-list>
+        </ion-row>
+        <ion-row>
+          <ion-infinite-scroll threshold="100px" (ionInfinite)="onInfiniteSchool($event)">
+            <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="加载更多学校...">
+            </ion-infinite-scroll-content>
+          </ion-infinite-scroll>
+        </ion-row>
+      </ion-grid>
+    </ion-slide>
+
+    <ion-slide>
+
+      <ion-grid fixed>
+        <ion-row>
+          <ion-list>
+            <ion-item *ngFor="let college of collegeList" (click)="onClickCollege(college)">
+              <ion-label>{{college.colName}}</ion-label>
+            </ion-item>
+          </ion-list>
+        </ion-row>
+        <ion-row>
+          <ion-infinite-scroll threshold="100px" (ionInfinite)="onInfiniteCollege($event)">
+            <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="加载更多学院...">
+            </ion-infinite-scroll-content>
+          </ion-infinite-scroll>
+        </ion-row>
+      </ion-grid>
+
+    </ion-slide>
+
+    <ion-slide>
+
+      <ion-grid fixed>
+        <ion-row>
+          <ion-list>
+            <ion-item *ngFor="let major of majorList" (click)="onClickMajor(major)">
+              <ion-label>{{major.majName}}</ion-label>
+            </ion-item>
+          </ion-list>
+        </ion-row>
+        <ion-row>
+          <ion-infinite-scroll threshold="100px" (ionInfinite)="onInfiniteMajor($event)">
+            <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="加载更多专业...">
+            </ion-infinite-scroll-content>
+          </ion-infinite-scroll>
+        </ion-row>
+      </ion-grid>
+
+    </ion-slide>
+
+  </ion-slides>
+
+</ion-content>

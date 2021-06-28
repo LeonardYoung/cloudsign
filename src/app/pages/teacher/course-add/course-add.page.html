@@ -1,68 +1,67 @@
 <ion-header>
   <ion-toolbar color="primary">
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/tabs/teacher/list"  text="返回"></ion-back-button>
+      <ion-back-button defaultHref="/tabs/teacher/list" (click)="onClickBack()" text="返回"></ion-back-button>
     </ion-buttons>
     <ion-title>创建班课</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content color="light">
-  <form #courseAddForm="ngForm" (ngSubmit)="onSubmit(courseAddForm)">
+<ion-content color="light" *ngIf="finish == true">
+  <h2 class="center">创建成功</h2>
+  <h2 class="center">课程号：{{newCourseId}}</h2>
+  <qrcode class="center" [qrdata]="newCourseId" [size]="256" [level]="'M'"></qrcode>
 
+</ion-content>
+
+<ion-content color="light" *ngIf="finish == false">
+  <form #courseAddForm="ngForm" (ngSubmit)="onSubmit(courseAddForm)">
     <ion-list>
       <ion-item>
         <ion-label>课程名称</ion-label>
-        <ion-input type="text" name="courseName" placeholder="请输入课程名称" required
-        pattern=".{0,10}"
-        [(ngModel)]="courseAddVo.courseName"
-         #name="ngModel"></ion-input>
+        <ion-input type="text" name="courseName" [(ngModel)]="courseAddVo.coursename" placeholder="请输入课程名称" required
+          pattern=".{0,10}" [(ngModel)]="courseAddVo.coursename" #name="ngModel"></ion-input>
       </ion-item>
-      <ion-text class="ion-text-left" color="danger"  *ngIf="name.invalid && name.touched">
+      <ion-text class="ion-text-left" color="danger" *ngIf="name.invalid && name.touched">
         <p [hidden]="!name.errors?.required" class="ion-padding-start">请输入课程名称</p>
         <p [hidden]="!name.errors?.pattern" class="ion-padding-start">您输入的课程名称太长 </p>
       </ion-text>
 
-
       <ion-item>
-        <ion-label>课程代码</ion-label>
-        <ion-input type="number" name="courseCode" placeholder="请输入课程代码" required 
-        pattern="[0-9]{6}"
-        [(ngModel)]="courseAddVo.courseCode"
-         #code="ngModel" ></ion-input>
+        <ion-label>课程描述</ion-label>
+        <ion-input type="text" name="courseDetail" [(ngModel)]="courseAddVo.detailinfo" placeholder="请输入课程描述" required
+          pattern=".{0,30}" [(ngModel)]="courseAddVo.detailinfo" #detail="ngModel"></ion-input>
       </ion-item>
-      <ion-text class="ion-text-left" color="danger"  *ngIf="code.invalid && code.touched ">
-        <p [hidden]="!code.errors?.required" class="ion-padding-start">请输入课程代码</p>
-        <p [hidden]="!code.errors?.pattern" class="ion-padding-start">请输入6位课程代码 </p>
+      <ion-text class="ion-text-left" color="danger" *ngIf="detail.invalid && detail.touched">
+        <p [hidden]="!detail.errors?.required" class="ion-padding-start">请输入课程描述</p>
+        <p [hidden]="!detail.errors?.pattern" class="ion-padding-start">您输入的课程描述太长 </p>
       </ion-text>
 
       <ion-item>
-        <ion-label>开始时间</ion-label>
-        <ion-datetime name="stime" (ionChange)="sTimeChange()" required
-        pickerFormat="HH:mm" minuteValues="0,5,10,15,20,25,30,35,40,45,50,55"
-        displayFormat="HH:mm" [(ngModel)]="stime"></ion-datetime>
-        <ion-note>点击选择</ion-note>
+        <ion-label>班级名称</ion-label>
+        <ion-input type="text" name="className" placeholder="请输入班级名称" required></ion-input>
       </ion-item>
 
       <ion-item>
-        <ion-label>结束时间</ion-label>
-        <ion-datetime name="etime" (ionChange)="eTimeChange()" required
-        pickerFormat="HH:mm" minuteValues="0,5,10,15,20,25,30,35,40,45,50,55"
-        displayFormat="HH:mm" [(ngModel)]="etime"></ion-datetime>
-        <ion-note>点击选择</ion-note>
+        <ion-label>学期</ion-label>
+        <ion-select value="2" placeholder="Select Pizza">
+          <ion-select-option value="1">2020-2021-2</ion-select-option>
+          <ion-select-option value="2">2021-2022-1</ion-select-option>
+        </ion-select>
       </ion-item>
 
-      <ion-item>
-        <ion-label>上课地点</ion-label>
-        <ion-input type="text" name="place" placeholder="请输入上课地点" required
-        pattern=".{0,10}"
-        [(ngModel)]="courseAddVo.classRome"
-         #room="ngModel"></ion-input>
+      <ion-item detail (click)="onClickSchools()">
+        <ion-label>
+          <ion-text >
+            <h2>选择学校及院系</h2>
+          </ion-text>
+          <ion-text>
+            <h2 *ngIf="schoolName != null"> {{schoolName + ' ' + collegeName + ' ' + majorName + ' ' }} </h2>
+            <h2 *ngIf="schoolName == null">点击选择学校</h2>
+          </ion-text>
+        </ion-label>
       </ion-item>
-      <ion-text class="ion-text-left" color="danger"  *ngIf="room.invalid && room.touched">
-        <p [hidden]="!room.errors?.required" class="ion-padding-start">请输入上课地点</p>
-        <p [hidden]="!room.errors?.pattern" class="ion-padding-start">您输入的上课地点太长 </p>
-      </ion-text>
+
 
       <ion-button [disabled]="courseAddForm.invalid" type="submit" expand="full" color="primary">提交
       </ion-button>

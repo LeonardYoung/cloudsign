@@ -1,41 +1,52 @@
+import { USER_TYPE_KEY } from './../../../shared/services/local-storage.service';
+import { LocalStorageService } from 'src/app/shared/services/local-storage.service';
+import { StudentService } from './../service/student.service';
+import { CourseDetail } from './../course-detail/dto/courseDetail';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CourseInfo } from '../../teacher/vo/course-info';
+import { ViewWillEnter, NavController, ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-stu-course-list',
   templateUrl: './stu-course-list.page.html',
   styleUrls: ['./stu-course-list.page.scss'],
 })
-export class StuCourseListPage implements OnInit {
+export class StuCourseListPage implements OnInit,ViewWillEnter {
+  
 
-  testData: CourseInfo[] = [
-    {
-      courseName: '课1',
-      courseCode: 123456,
-      classRoom: '东3-101',
-      startTime: '13:00',
-      endTime: '18:00',
-    },
-    {
-      courseName: '课2',
-      courseCode: 123456,
-      classRoom: '东3-101',
-      startTime: '13:00',
-      endTime: '18:00',
-    },
-    {
-      courseName: '课3',
-      courseCode: 123456,
-      classRoom: '东3-101',
-      startTime: '13:00',
-      endTime: '18:00',
-    },
-  ]
+  courseList: CourseDetail[] = []
   deleteFlag = false
-  constructor(private router:Router) { }
+  enable = false
+  constructor(private router:Router,
+    private stuServer:StudentService,
+    private localServe: LocalStorageService,
+    private navCtl:NavController,
+    private toastCtl: ToastController) {
+   }
+   ionViewWillEnter():void{
+     const userType = this.localServe.get(USER_TYPE_KEY,{}) 
+     if(userType == 3){
+       this.enable = false
+       return
+     }else{
+       this.enable = true
+     }
+
+     const that =this
+     this.stuServer.getCourseOfStu().then((resp:any)=>{
+       console.log(resp)
+      that.courseList = resp
+     })
+    
+   }
 
   ngOnInit() {
+  }
+
+  onClickJoin(){
+    if(this.enable)
+      this.navCtl.navigateForward('/tabs/student/join')
   }
 
   /**
@@ -44,7 +55,8 @@ export class StuCourseListPage implements OnInit {
    * @memberof CourseListPage
    */
    onClickEdit() {
-    this.deleteFlag = true;
+    if(this.enable)
+      this.deleteFlag = true;
   }
   /**
    * 监听完成按钮
@@ -64,8 +76,8 @@ export class StuCourseListPage implements OnInit {
     console.log('-----',course);
     this.router.navigate(['/tabs/student/detail'],{
       queryParams:{
-        id:'test',
-        name:course.courseName
+        id:course.cid,
+        from:'0'
       }
     })
   }
@@ -75,14 +87,31 @@ export class StuCourseListPage implements OnInit {
    * @param {*} course 点击的班课
    * @memberof CourseListPage
    */
-   onClickSignin(course: CourseInfo){
+   async onClickSignin(course: CourseInfo){
     console.log(course);
-    this.router.navigate(['/tabs/student/onekey'],{
-      queryParams:{
-        id:'test',
-        name:course.courseName
+    const toast = await this.toastCtl.create({
+      duration: 1000,
+      position: 'top'
+    });
+    this.stuServer.getCheckTasks(course.cid).then((resp:any)=>{
+      let url = ''
+      if(resp.type == 1){
+        url = '/tabs/student/onekey'
       }
+      else{
+        url = '/tabs/student/gesture'
+      }
+      this.router.navigate([url],{
+        queryParams:{
+          cid:course.cid,
+          id:resp.id
+        }
+      })
+    }).catch((err)=>{
+      toast.message = '没有签到任务'
+      toast.present()
     })
+    
   }
 
   /**
@@ -93,7 +122,16 @@ export class StuCourseListPage implements OnInit {
    */
    onClickDelete(course: CourseInfo){
     console.log(course);
-    
+    this.stuServer.unjoinCourse(course.cid).then(()=>{
+      for(let i = 0;i < this.courseList.length;++i){
+        if(this.courseList[i].cid == course.cid){
+          this.courseList.splice(i,1)
+          break
+        }
+      }
+    }).catch((err)=>{
+      console.log('失败')
+    })
   }
 
   

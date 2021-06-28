@@ -8,7 +8,7 @@
 </ion-header>
 
 <ion-content color="light">
-  <ion-label style="color: grey;">缺勤</ion-label>
+  <!-- <ion-label style="color: grey;">缺勤</ion-label>
   <ion-label style="color: grey;" class="rightend">1人</ion-label>
   <ion-list>
     <ion-item *ngFor="let member of absenceList" >
@@ -29,9 +29,9 @@
         </ion-button>
       </ion-note>
     </ion-item>
-  </ion-list>
+  </ion-list> -->
 
-  <ion-label style="color: grey;">迟到</ion-label>
+  <!-- <ion-label style="color: grey;">迟到</ion-label>
   <ion-label style="color: grey;" class="rightend">1人</ion-label>
   <ion-list>
     <ion-item *ngFor="let member of lateList" >
@@ -47,13 +47,19 @@
         </ion-text>
       </ion-label>
     </ion-item>
-  </ion-list>
+  </ion-list> -->
 
-  <ion-label style="color: grey;">成功签到</ion-label>
-  <ion-label style="color: grey;" class="rightend">1人</ion-label>
+  <!-- <ion-label style="color: grey;">成功签到</ion-label> -->
+  <!-- <ion-label style="color: grey;" class="rightend">1人</ion-label> -->
   <ion-list>
-    <ion-item *ngFor="let member of normalList" >
-      <ion-thumbnail slot="start">
+    <ion-item *ngFor="let item of stuCheckList" >
+
+      <ion-label>{{item.student.name}}</ion-label>
+      <ion-label>{{item.student.sid}}</ion-label>
+      
+      <ion-note slot="end" *ngIf="item.isCheck == false">未签到</ion-note>
+      <ion-note slot="end" *ngIf="item.isCheck == true">已签到</ion-note>
+      <!-- <ion-thumbnail slot="start">
         <img src="assets/img/c_goodspicture.png"  />
       </ion-thumbnail>
       <ion-label>
@@ -63,7 +69,7 @@
         <ion-text >
           <p>{{member.No}}</p>
         </ion-text>
-      </ion-label>
+      </ion-label> -->
     </ion-item>
   </ion-list>
 

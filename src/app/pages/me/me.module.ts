@@ -1,3 +1,4 @@
+import { SchoolsPage } from './schools/schools.page';
 import { HomePage } from './home/home.page';
 import { EditMyInfoPage } from './edit-my-info/edit-my-info.page';
 import { AlterPasswardPage } from './alter-passward/alter-passward.page';
@@ -14,7 +15,8 @@ import { MeRoutingModule } from './me-routing.module';
     AboutUsPage,
     AlterPasswardPage,
     EditMyInfoPage,
-    HomePage
+    HomePage,
+    SchoolsPage
   ],
   imports: [
     CommonModule,
